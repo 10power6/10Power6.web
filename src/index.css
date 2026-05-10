@@ -1,0 +1,275 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+/* Scroll-based animation keyframes */
+@keyframes fadeUpScale {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3), 0 0 40px rgba(99, 102, 241, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.5), 0 0 60px rgba(99, 102, 241, 0.2);
+  }
+}
+
+@keyframes iconGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.8));
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes flowingGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Process cards animation */
+.process-card {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeUpScale 0.8s ease-out forwards;
+}
+
+.process-card.stagger-1 {
+  animation-delay: 0.1s;
+}
+
+.process-card.stagger-2 {
+  animation-delay: 0.2s;
+}
+
+.process-card.stagger-3 {
+  animation-delay: 0.3s;
+}
+
+.process-card.stagger-4 {
+  animation-delay: 0.4s;
+}
+
+.process-card.stagger-5 {
+  animation-delay: 0.5s;
+}
+
+.process-card.stagger-6 {
+  animation-delay: 0.6s;
+}
+
+.process-card.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Icon glow effect */
+.process-icon {
+  animation: iconGlow 3s ease-in-out infinite;
+}
+
+/* Glassmorphism effect */
+.glassmorphism {
+  background: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+.glassmorphism-hover:hover {
+  background: rgba(30, 41, 59, 0.8);
+  border-color: rgba(99, 102, 241, 0.3);
+  transition: all 0.4s ease;
+}
+
+/* Timeline connector */
+.timeline-connector {
+  position: relative;
+  height: 2px;
+  background: linear-gradient(to right, transparent, rgba(99, 102, 241, 0.5), transparent);
+}
+
+.timeline-connector::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgb(99, 102, 241), transparent);
+  border-radius: 1px;
+  animation: shimmer 3s infinite;
+  background-size: 1000px 100%;
+}
+
+/* Responsive scrolling animation */
+@media (max-width: 768px) {
+  .process-card {
+    animation: slideInLeft 0.6s ease-out forwards;
+  }
+
+  .process-card:nth-child(even) {
+    animation: slideInRight 0.6s ease-out forwards;
+  }
+}
+
+/* Intersection observer animation state */
+.animate-in {
+  animation: fadeUpScale 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards !important;
+}
+
+/* Gradient animation for premium feel */
+.gradient-animate {
+  background-size: 200% 200%;
+  animation: flowingGradient 8s ease infinite;
+}
+
+/* Service and card scroll animations */
+@keyframes slideUpStagger {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleUpGlow {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes hoverGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 0 30px rgba(99, 102, 241, 0.6));
+  }
+}
+
+/* Service card animations */
+.service-card {
+  opacity: 0;
+  transform: translateY(40px);
+  animation: slideUpStagger 0.7s ease-out forwards;
+}
+
+.service-card.stagger-0 { animation-delay: 0.05s; }
+.service-card.stagger-1 { animation-delay: 0.15s; }
+.service-card.stagger-2 { animation-delay: 0.25s; }
+.service-card.stagger-3 { animation-delay: 0.35s; }
+.service-card.stagger-4 { animation-delay: 0.45s; }
+.service-card.stagger-5 { animation-delay: 0.55s; }
+
+.service-card.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Alternating slide-in effect */
+.service-card.slide-left {
+  animation: slideInFromLeft 0.8s ease-out forwards;
+}
+
+.service-card.slide-right {
+  animation: slideInFromRight 0.8s ease-out forwards;
+}
+
+/* Service icon glow */
+.service-icon {
+  animation: hoverGlow 3s ease-in-out infinite;
+}
+
+/* Enhanced hover effect for cards */
+.service-card-hover {
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.service-card-hover:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 60px rgba(99, 102, 241, 0.4);
+}
+
+/* Parallax text effect */
+.parallax-text {
+  will-change: transform;
+}
