@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useState, useRef } from "react";
 import emailjs from "@emailjs/browser";
+import { motion } from "framer-motion";
+import { BrowserRouter as Router, Link, Route, Routes, useNavigate, useLocation } from "react-router-dom";
+import { Brain, PenTool, Code2, CheckCircle2, Rocket, ShieldCheck, TrendingUp, Smartphone, MonitorSmartphone, BarChart3, LifeBuoy, Bot, Phone } from "lucide-react";
+import logoFileUrl from "./assets/10Power6Logo.png";
+import ServicePage from "./pages/ServicePage";
 
 const slides = [
   {
@@ -34,46 +39,60 @@ const slides = [
 const services = [
   {
     name: "Web Applications",
-    description: "Custom web apps engineered for performance, scalability, and great UX. We build robust platforms that grow with your business.",
-    icon: "💻",
-    color: "from-blue-500/30 to-cyan-500/20",
-    accent: "indigo",
+    slug: "web-applications",
+    description:
+      "Custom web applications engineered for scalability, performance, and seamless user experiences. We build powerful digital platforms tailored to automate workflows, improve efficiency, and accelerate business growth using modern technologies and cloud architecture.",
+    Icon: Code2,
+    color: "from-blue-600/20 to-cyan-500/10",
+  },{
+    name: "AI Integration",
+    slug: "ai-integration",
+    description:
+      "Intelligent AI integrations that automate processes, enhance customer experiences, and unlock operational efficiency. From AI chatbots to workflow automation and custom AI solutions, we help businesses leverage artificial intelligence for modern growth.",
+    Icon: Bot,
+    color: "from-violet-600/20 to-fuchsia-500/10",
   },
   {
     name: "Digital Marketing",
-    description: "Data-backed campaign strategy focused on qualified traffic and conversion. We drive measurable results through intelligent marketing.",
-    icon: "📊",
-    color: "from-purple-500/30 to-pink-500/20",
-    accent: "purple",
+    slug: "digital-marketing",
+    description:
+      "Data-driven digital marketing strategies focused on generating qualified leads, increasing online visibility, and maximizing ROI. From paid advertising to conversion optimization, we help brands grow through intelligent marketing solutions.",
+    Icon: TrendingUp,
+    color: "from-purple-600/20 to-pink-500/10",
   },
   {
-    name: "SEO",
-    description: "Technical and content SEO optimization to improve rankings and organic reach. Dominate search results, not just appear in them.",
-    icon: "🎯",
-    color: "from-amber-500/30 to-orange-500/20",
-    accent: "amber",
+    name: "Mobile Applications",
+    slug: "mobile-applications",
+    description:
+      "Modern iOS and Android mobile applications designed with intuitive interfaces, high performance, and seamless functionality. We create mobile experiences that engage users, strengthen customer retention, and scale with your business.",
+    Icon: Smartphone,
+    color: "from-pink-600/20 to-rose-500/10",
   },
   {
     name: "Websites",
-    description: "Modern responsive websites designed to communicate value and convert visitors into customers with stunning experiences.",
-    icon: "🌐",
-    color: "from-green-500/30 to-emerald-500/20",
-    accent: "green",
+    slug: "websites",
+    description:
+      "Premium responsive websites crafted to communicate brand value, improve credibility, and convert visitors into customers. Every website is optimized for speed, accessibility, SEO, and exceptional user experience across all devices.",
+    Icon: MonitorSmartphone,
+    color: "from-green-600/20 to-emerald-500/10",
   },
   {
-    name: "Mobile Apps",
-    description: "iOS and Android app development with intuitive experiences and robust APIs. Apps that users love to use every day.",
-    icon: "📱",
-    color: "from-pink-500/30 to-rose-500/20",
-    accent: "pink",
+    name: "SEO",
+    slug: "seo",
+    description:
+      "Advanced SEO strategies designed to improve search engine rankings, increase organic traffic, and strengthen long-term online authority. We optimize technical SEO, on-page content, and performance to help businesses dominate search results.",
+    Icon: BarChart3,
+    color: "from-amber-500/20 to-orange-500/10",
   },
   {
     name: "Strategy & Support",
-    description: "Roadmapping, launch planning, and ongoing optimization to maximize product outcomes. We're your long-term growth partner.",
-    icon: "🚀",
-    color: "from-indigo-500/30 to-blue-500/20",
-    accent: "indigo",
+    slug: "strategy-support",
+    description:
+      "Strategic consulting, launch planning, and ongoing technical support to help businesses scale with confidence. We partner with clients long-term to optimize operations, improve digital infrastructure, and support continuous growth.",
+    Icon: LifeBuoy,
+    color: "from-indigo-600/20 to-blue-500/10",
   },
+ 
 ];
 
 const processStages = [
@@ -81,176 +100,241 @@ const processStages = [
     number: "01",
     title: "Ideate",
     description: "We collaborate with you to define the vision, strategy, and core objectives that will drive your product's success.",
-    icon: "💡",
+    icon: Brain,
     color: "from-amber-500/30 to-orange-500/20",
+    iconGradient: "from-blue-500/25 via-violet-500/20 to-cyan-400/15",
   },
   {
     number: "02",
     title: "Design",
     description: "Expert UX/UI design that balances aesthetics with functionality, creating intuitive experiences users love.",
-    icon: "✏️",
+    icon: PenTool,
     color: "from-purple-500/30 to-pink-500/20",
+    iconGradient: "from-violet-500/25 via-cyan-400/20 to-slate-900/15",
   },
   {
     number: "03",
     title: "Develop",
     description: "Scalable, robust development using modern tech stacks, ensuring clean code and optimal performance.",
-    icon: "⚙️",
+    icon: Code2,
     color: "from-blue-500/30 to-cyan-500/20",
+    iconGradient: "from-blue-500/25 via-cyan-400/20 to-indigo-500/15",
   },
   {
     number: "04",
     title: "Test",
     description: "Rigorous quality assurance and testing across all platforms to ensure reliability and superior user experience.",
-    icon: "✓",
+    icon: CheckCircle2,
     color: "from-green-500/30 to-emerald-500/20",
+    iconGradient: "from-cyan-400/25 via-green-400/20 to-slate-900/15",
   },
   {
     number: "05",
     title: "Launch",
     description: "Strategic deployment with optimization, monitoring, and launch marketing to maximize impact and reach.",
-    icon: "🚀",
+    icon: Rocket,
     color: "from-indigo-500/30 to-blue-500/20",
+    iconGradient: "from-fuchsia-500/25 via-pink-500/20 to-indigo-500/15",
   },
   {
     number: "06",
     title: "Support",
     description: "Ongoing maintenance, updates, and optimization to keep your product performing at peak levels.",
-    icon: "🛡️",
+    icon: ShieldCheck,
     color: "from-cyan-500/30 to-teal-500/20",
-  },
+    iconGradient: "from-cyan-400/25 via-blue-500/20 to-slate-900/15",
+  }, 
 ];
 
-function ServicesSection() {
-  const [visibleServices, setVisibleServices] = useState(new Set());
+// Custom hook for navigation with scroll-to-section logic
+function useSmartNavigation() {
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  useEffect(() => {
-    const observers = new Map();
+  return (sectionId) => {
+    const isOnServicePage = location.pathname.startsWith("/services/");
 
-    services.forEach((_, index) => {
-      const element = document.querySelector(`[data-service-index="${index}"]`);
-      if (!element) return;
-
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setVisibleServices((prev) => new Set([...prev, index]));
-            observer.unobserve(element);
-          }
-        },
-        { threshold: 0.1, rootMargin: "0px 0px -100px 0px" }
-      );
-
-      observer.observe(element);
-      observers.set(index, observer);
-    });
-
-    return () => {
-      observers.forEach((observer) => observer.disconnect());
+    const scrollToSection = () => {
+      // Small delay to ensure DOM is ready
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 100);
     };
-  }, []);
+
+    if (isOnServicePage) {
+      // Navigate to home first, then scroll
+      navigate("/");
+      scrollToSection();
+    } else {
+      // Already on home, just scroll
+      scrollToSection();
+    }
+  };
+}
+
+// Reusable navigation link component
+function NavLink({ sectionId, label }) {
+  const navigate = useSmartNavigation();
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    navigate(sectionId);
+  };
 
   return (
-    <section id="services" className="relative mx-auto max-w-7xl px-6 py-32">
-      {/* Background effects */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute top-1/4 left-0 h-96 w-96 rounded-full bg-blue-600/5 blur-3xl" />
-        <div className="absolute bottom-1/4 right-0 h-96 w-96 rounded-full bg-purple-600/5 blur-3xl" />
+    <a
+      href={`#${sectionId}`}
+      onClick={handleClick}
+      className="transition hover:text-indigo-300 cursor-pointer"
+    >
+      {label}
+    </a>
+  );
+}
+
+function BrandLogo() {
+  const navigate = useNavigate();
+
+  const handleLogoClick = (e) => {
+    e.preventDefault();
+    navigate("/");
+    // Scroll to top smoothly
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 50);
+  };
+
+  return (
+    <motion.a
+      href="/"
+      onClick={handleLogoClick}
+      aria-label="10Power6"
+      initial={{ opacity: 0, y: -8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.55, ease: "easeOut", delay: 0.15 }}
+      className="group relative inline-flex h-12 w-[3.75rem] items-center justify-center rounded-2xl p-1 md:h-14 md:w-[4.5rem] md:p-2 overflow-visible transition duration-300 ease-out hover:bg-white/5 hover:shadow-[0_0_24px_rgba(255,255,255,0.14)] cursor-pointer"
+    >
+      <img
+        src={logoFileUrl}
+        alt="10Power6 logo"
+        className="absolute left-0 top-1/2 h-full w-full -translate-y-1/2 scale-[2.7] origin-left object-contain"
+      />
+      <span className="sr-only">10Power6</span>
+    </motion.a>
+  );
+}
+
+function ServicesSection() {
+  const container = {
+    hidden: {},
+    show: {
+      transition: { staggerChildren: 0.08, delayChildren: 0.1 },
+    },
+  };
+
+  const cardVariant = {
+    hidden: { opacity: 0, y: 32, scale: 0.96 },
+    show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] } },
+  };
+
+  return (
+    <section id="services" className="relative mx-auto max-w-7xl px-6 py-28 overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute left-6 top-10 h-72 w-72 rounded-full bg-gradient-to-br from-indigo-500/10 to-transparent blur-3xl" />
+        <div className="absolute right-6 top-1/4 h-56 w-56 rounded-full bg-gradient-to-br from-slate-300/5 to-transparent blur-3xl" />
+        <div className="absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-purple-500/10 to-transparent blur-3xl" />
       </div>
 
-      {/* Header */}
-      <div className="mb-24 max-w-3xl">
-        <p className="text-sm font-semibold uppercase tracking-[0.22em] text-indigo-300 animate-fade-in">
-          Our Services
-        </p>
-        <h2 className="mt-4 text-4xl font-extrabold leading-tight text-white md:text-5xl lg:text-6xl">
-          End-to-end solutions for ambitious brands
+      <div className="mx-auto max-w-3xl text-center mb-14">
+        <span className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-indigo-300 backdrop-blur-sm">
+          Selected Services
+        </span>
+        <h2 className="mt-6 text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
+          Digital Solutions Built for Modern Growth
         </h2>
-        <p className="mt-6 text-lg leading-relaxed text-slate-300">
-          10Power6 helps startups and established businesses launch digital products, improve visibility, and accelerate growth. We combine expertise in web, mobile, marketing, and strategy to deliver transformative results.
+        <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
+          We engineer scalable digital experiences, AI-powered systems, and growth-focused solutions designed to help ambitious businesses lead in the modern digital era.
         </p>
       </div>
 
-      {/* Services Grid */}
-      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {services.map((service, index) => (
-          <div
-            key={service.name}
-            data-service-index={index}
-            className={`service-card stagger-${index} ${
-              visibleServices.has(index) ? "in-view" : ""
-            } ${index % 2 === 0 ? "slide-left" : "slide-right"}`}
+      <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+        {services.map((svc, idx) => (
+          <motion.article
+            key={svc.name}
+            variants={cardVariant}
+            whileHover={{ y: -8, scale: 1.02 }}
+            className="group relative overflow-hidden rounded-[28px] border border-white/10 bg-slate-950/90 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.35)] backdrop-blur-xl transition-all duration-500"
           >
-            <article className="service-card-hover relative h-full rounded-3xl border border-slate-700/50 backdrop-blur-sm overflow-hidden group">
-              {/* Background gradient */}
-              <div className={`absolute inset-0 -z-10 bg-gradient-to-br ${service.color}`} />
-              <div className="absolute inset-0 -z-10 bg-slate-900/40" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(99,102,241,0.16),_transparent_42%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+            <div className="absolute -right-16 top-8 h-28 w-28 rounded-full bg-gradient-to-br from-fuchsia-500/10 to-transparent blur-3xl" />
+            <div className="absolute -left-8 bottom-10 h-24 w-24 rounded-full bg-gradient-to-br from-cyan-500/10 to-transparent blur-3xl" />
 
-              {/* Animated hover overlay */}
-              <div className="absolute inset-0 -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-purple-500/10 blur-xl" />
-              </div>
-
-              {/* Content */}
-              <div className="relative h-full flex flex-col p-8 md:p-10 z-10">
-                {/* Icon */}
-                <div className="service-icon text-6xl mb-6 filter drop-shadow-lg group-hover:scale-125 transition-transform duration-500 origin-left">
-                  {service.icon}
-                </div>
-
-                {/* Text Content */}
-                <div className="flex-1">
-                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 group-hover:text-indigo-200 transition-colors duration-300">
-                    {service.name}
+            <div className="relative z-10 flex h-full flex-col gap-6">
+              <div className="flex items-center gap-4">
+                <motion.div
+                  whileHover={{ y: -2 }}
+                  className="flex h-16 w-16 items-center justify-center rounded-3xl bg-white/5 ring-1 ring-white/10 shadow-[0_20px_60px_rgba(99,102,241,0.1)]"
+                >
+                  <svc.Icon className="h-7 w-7 text-indigo-300" />
+                </motion.div>
+                <div className="space-y-2">
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-indigo-300">Service</p>
+                  <h3 id={`service-${idx}`} className="text-xl font-semibold text-white">
+                    {svc.name}
                   </h3>
-                  <p className="text-base leading-relaxed text-slate-300 group-hover:text-slate-200 transition-colors duration-300">
-                    {service.description}
-                  </p>
                 </div>
-
-                {/* Bottom accent line */}
-                <div className="mt-8 h-1 w-0 bg-gradient-to-r from-indigo-500 to-purple-500 group-hover:w-full transition-all duration-500" />
-
-                {/* Corner accent */}
-                <div className="absolute top-0 right-0 h-32 w-32 bg-gradient-to-bl from-indigo-500/20 to-transparent rounded-bl-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
-            </article>
-          </div>
-        ))}
-      </div>
 
-      {/* CTA */}
-      <div className="mt-20 flex justify-center">
-        <a
-          href="#contact"
-          className="inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 px-10 py-4 text-base font-semibold text-white transition-all hover:shadow-2xl hover:shadow-indigo-500/50 hover:scale-105 active:scale-95"
-        >
-          <span>Explore All Services</span>
-          <span>→</span>
-        </a>
-      </div>
+              <p className="text-sm leading-7 text-slate-300">{svc.description}</p>
+
+              <div className="mt-auto flex items-center justify-between">
+                <Link
+                  to={`/services/${svc.slug}`}
+                  className="text-xs font-semibold uppercase tracking-[0.24em] text-indigo-300 transition hover:text-white"
+                >
+                  Learn more
+                </Link>
+                <Link
+                  to={`/services/${svc.slug}`}
+                  className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500/15 to-violet-500/15 text-indigo-200 shadow-[0_8px_24px_rgba(99,102,241,0.12)] transition-all duration-300 hover:shadow-[0_16px_40px_rgba(99,102,241,0.24)]"
+                  aria-label={`Learn more about ${svc.name}`}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+                    <path d="M5 12h14" />
+                    <path d="m13 6 6 6-6 6" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
+          </motion.article>
+        ))}
+      </motion.div>
     </section>
   );
 }
 
 function ProcessSection() {
-  const [visibleCards, setVisibleCards] = useState(new Set());
+  const [activeStep, setActiveStep] = useState(-1);
+  const [revealedSteps, setRevealedSteps] = useState(new Set());
 
   useEffect(() => {
     const observers = new Map();
 
     processStages.forEach((_, index) => {
-      const element = document.querySelector(`[data-process-index="${index}"]`);
+      const element = document.querySelector(`[data-step-index="${index}"]`);
       if (!element) return;
 
       const observer = new IntersectionObserver(
         ([entry]) => {
           if (entry.isIntersecting) {
-            setVisibleCards((prev) => new Set([...prev, index]));
-            observer.unobserve(element);
+            setRevealedSteps((prev) => new Set([...prev, index]));
+            setActiveStep(index);
           }
         },
-        { threshold: 0.1, rootMargin: "0px 0px -50px 0px" }
+        { threshold: 0.35 }
       );
 
       observer.observe(element);
@@ -263,102 +347,64 @@ function ProcessSection() {
   }, []);
 
   return (
-    <section id="process" className="relative mx-auto max-w-6xl px-6 py-20">
-      {/* Background gradient effect */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute top-1/4 left-0 h-96 w-96 rounded-full bg-indigo-600/5 blur-3xl" />
-        <div className="absolute bottom-1/4 right-0 h-96 w-96 rounded-full bg-purple-600/5 blur-3xl" />
+    <section id="process" className="relative mx-auto max-w-7xl px-6 py-24 overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute left-8 top-12 h-72 w-72 rounded-full bg-gradient-to-br from-indigo-500/10 to-transparent blur-3xl" />
+        <div className="absolute right-8 bottom-12 h-64 w-64 rounded-full bg-gradient-to-br from-purple-500/10 to-transparent blur-3xl" />
+        <div className="absolute left-1/2 top-24 h-1/2 w-[360px] -translate-x-1/2 rounded-full bg-gradient-to-r from-white/5 via-indigo-400/5 to-transparent blur-xl" />
       </div>
 
-      {/* Header */}
-      <div className="mb-16 max-w-3xl">
-        <p className="text-sm font-semibold uppercase tracking-[0.22em] text-indigo-300">
-          Our Workflow
-        </p>
-        <h2 className="mt-3 text-3xl font-extrabold text-white md:text-4xl lg:text-5xl">
-          Product Development Process
-        </h2>
-        <p className="mt-4 text-lg text-slate-300">
-          A proven methodology that transforms ideas into market-leading products. From ideation to support, every stage is optimized for success.
+      <div className="mx-auto max-w-3xl text-center pb-12">
+        <p className="text-sm font-semibold uppercase tracking-[0.28em] text-indigo-300">Product Development Process</p>
+        <h2 className="mt-4 text-4xl font-extrabold leading-tight text-white md:text-5xl">Product Development Process</h2>
+        <p className="mt-4 text-lg leading-8 text-slate-300">
+          Our streamlined development workflow transforms ideas into scalable digital products through strategy, design, engineering, testing, and continuous optimization.
         </p>
       </div>
 
-      {/* Timeline Cards */}
-      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      <div className="relative grid gap-6 lg:grid-cols-2">
+        <div className="hidden lg:block absolute left-6 top-16 h-[calc(100%-4rem)] w-px bg-gradient-to-b from-indigo-500/60 via-slate-500/30 to-transparent" />
+
         {processStages.map((stage, index) => (
-          <div key={stage.number} data-process-index={index}>
-            {/* Timeline connection line (hidden on mobile, visible on desktop between cards) */}
-            {index < processStages.length - 1 && (
-              <div className="hidden lg:block absolute -right-4 top-24 h-32 w-8">
-                <svg className="h-full w-full" viewBox="0 0 32 128" preserveAspectRatio="none">
-                  <defs>
-                    <linearGradient id={`gradient-${index}`} x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" stopColor="rgb(99, 102, 241)" stopOpacity="0.5" />
-                      <stop offset="50%" stopColor="rgb(99, 102, 241)" stopOpacity="0.1" />
-                      <stop offset="100%" stopColor="rgb(99, 102, 241)" stopOpacity="0" />
-                    </linearGradient>
-                  </defs>
-                  <path
-                    d="M 16 0 Q 16 32 32 64 Q 16 96 16 128"
-                    stroke={`url(#gradient-${index})`}
-                    strokeWidth="2"
-                    fill="none"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </div>
-            )}
-
-            {/* Card */}
-            <div
-              className={`process-card ${
-                visibleCards.has(index) ? "in-view" : ""
-              } stagger-${(index % 6) + 1} relative h-full rounded-2xl border border-slate-700/50 p-8 transition-all duration-500 glassmorphism glassmorphism-hover group overflow-hidden bg-gradient-to-br ${stage.color}`}
-            >
-              {/* Animated background gradient */}
-              <div className="absolute inset-0 -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-purple-500/10 blur-xl" />
-              </div>
-
-              {/* Stage number and icon area */}
-              <div className="flex items-start justify-between mb-5">
-                <div className="process-icon text-4xl filter drop-shadow-lg group-hover:scale-110 transition-transform duration-300">
-                  {stage.icon}
+          <motion.article
+            key={stage.number}
+            data-step-index={index}
+            initial={{ opacity: 0, y: 40, scale: 0.98 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, amount: 0.35 }}
+            transition={{ duration: 0.75, ease: "easeOut", delay: index * 0.08 }}
+            className={`group relative flex h-full flex-col justify-between overflow-hidden rounded-[2rem] border border-slate-700/50 bg-slate-950/80 p-8 shadow-2xl shadow-slate-950/40 backdrop-blur-xl transition-all duration-500 ${
+              activeStep === index ? "border-indigo-400/40 bg-slate-900/90 shadow-[0_30px_80px_-40px_rgba(99,102,241,0.75)]" : "hover:border-indigo-400/20 hover:shadow-[0_20px_60px_-30px_rgba(15,23,42,0.5)]"
+            }`}
+          >
+            <div className="absolute right-0 top-0 h-full w-1 bg-gradient-to-b from-transparent via-indigo-300/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+            <div className="absolute left-0 top-0 h-full w-full rounded-[2rem] bg-gradient-to-br from-indigo-500/5 via-transparent to-purple-500/5 opacity-40 blur-2xl" />
+            <div className="relative z-10">
+              <div className="flex items-center gap-4">
+                <div className={`flex h-14 w-14 items-center justify-center rounded-3xl border border-white/10 bg-slate-900/60 text-white shadow-lg shadow-slate-950/30 transition-transform duration-500 group-hover:-translate-y-1 ${stage.iconGradient} bg-gradient-to-br from-slate-900/40 via-white/10 to-transparent`}> 
+                  <motion.div
+                    animate={{ y: [0, -3, 0] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                    className="inline-flex rounded-3xl bg-white/10 p-2 shadow-inner shadow-indigo-500/20"
+                  >
+                    <stage.icon className="h-7 w-7 text-white" />
+                  </motion.div>
                 </div>
-                <span className="text-xs font-bold text-indigo-300 uppercase tracking-widest">
-                  Step {stage.number}
-                </span>
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-[0.32em] text-indigo-300/80">Step {stage.number}</span>
+                  <h3 className="mt-3 text-2xl font-semibold text-white">{stage.title}</h3>
+                </div>
               </div>
 
-              {/* Content */}
-              <div className="relative z-10">
-                <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-indigo-200 transition-colors duration-300">
-                  {stage.title}
-                </h3>
-                <p className="text-sm leading-relaxed text-slate-300 group-hover:text-slate-200 transition-colors duration-300">
-                  {stage.description}
-                </p>
-              </div>
-
-              {/* Hover line accent */}
-              <div className="absolute bottom-0 left-0 h-1 w-0 bg-gradient-to-r from-indigo-500 to-purple-500 group-hover:w-full transition-all duration-500" />
-
-              {/* Corner accent */}
-              <div className="absolute top-0 right-0 h-20 w-20 bg-gradient-to-br from-indigo-500/10 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <p className="mt-6 text-sm leading-7 text-slate-300">{stage.description}</p>
             </div>
-          </div>
-        ))}
-      </div>
 
-      {/* Bottom CTA */}
-      <div className="mt-16 flex justify-center">
-        <a
-          href="#contact"
-          className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 px-8 py-3 text-sm font-semibold text-white transition-all hover:shadow-lg hover:shadow-indigo-500/50 hover:scale-105"
-        >
-          Start Your Project Today
-          <span>→</span>
-        </a>
+            <div className="mt-8 flex items-center justify-between text-sm text-slate-400">
+              <span className="font-semibold text-indigo-300/90">Progress</span>
+              <span>{index + 1}/6</span>
+            </div>
+          </motion.article>
+        ))}
       </div>
     </section>
   );
@@ -370,18 +416,83 @@ function ContactSection() {
   const [submitStatus, setSubmitStatus] = useState(null);
   const [toast, setToast] = useState(null);
   const [visibleForm, setVisibleForm] = useState(false);
+  const [recaptchaReady, setRecaptchaReady] = useState(false);
+  const [recaptchaError, setRecaptchaError] = useState(null);
+  const lastSubmitRef = useRef(0);
+  const [errors, setErrors] = useState({});
 
-  const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "YOUR_PUBLIC_KEY_HERE";
-  const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || "YOUR_SERVICE_ID_HERE";
-  const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "YOUR_TEMPLATE_ID_HERE";
+  const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "VNlZtteVt-bitO0lt";
+  const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || "service_9zlm3gd";
+  const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || "template_z2h8hoo";
   const EMAIL_RECIPIENT = "sales.10power6@gmail.com";
+  const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY || "";
 
   useEffect(() => {
-    // Initialize EmailJS
-    if (EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY_HERE") {
-      emailjs.init(EMAILJS_PUBLIC_KEY);
+    // Initialize EmailJS if public key provided
+    if (EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== "VNlZtteVt-bitO0lt") {
+      try {
+        emailjs.init(EMAILJS_PUBLIC_KEY);
+      } catch (err) {
+        // don't break the app if init fails
+        console.warn("EmailJS init failed:", err);
+      }
+    } else {
+      console.warn("EmailJS public key not set. Emails will not be sent in development.");
     }
   }, [EMAILJS_PUBLIC_KEY]);
+
+  useEffect(() => {
+    if (!RECAPTCHA_SITE_KEY) {
+      console.warn("VITE_RECAPTCHA_SITE_KEY is not set. Contact form reCAPTCHA will not run.");
+      return;
+    }
+
+    if (window.grecaptcha && window.grecaptcha.execute) {
+      setRecaptchaReady(true);
+      return;
+    }
+
+    const existingScript = document.querySelector('script[src*="recaptcha/api.js"]');
+    if (existingScript) {
+      existingScript.addEventListener("load", () => setRecaptchaReady(true));
+      existingScript.addEventListener("error", () => {
+        setRecaptchaError("Unable to load reCAPTCHA. Please refresh and try again.");
+      });
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
+    script.async = true;
+    script.defer = true;
+    script.onload = () => setRecaptchaReady(true);
+    script.onerror = () => setRecaptchaError("Unable to load reCAPTCHA. Please refresh and try again.");
+    document.body.appendChild(script);
+
+    return () => {
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+    };
+  }, [RECAPTCHA_SITE_KEY]);
+
+  const executeRecaptcha = async () => {
+    if (!RECAPTCHA_SITE_KEY) {
+      throw new Error("reCAPTCHA is not configured.");
+    }
+    if (!window.grecaptcha || !window.grecaptcha.execute) {
+      throw new Error("reCAPTCHA is not ready.");
+    }
+
+    return new Promise((resolve, reject) => {
+      window.grecaptcha.ready(() => {
+        window.grecaptcha
+          .execute(RECAPTCHA_SITE_KEY, { action: "contact_form" })
+          .then(resolve)
+          .catch(reject);
+      });
+    });
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -404,6 +515,14 @@ function ContactSection() {
     e.preventDefault();
     setSubmitStatus(null);
     setToast(null);
+    setErrors({});
+    // Prevent rapid duplicate submissions (client-side)
+    const now = Date.now();
+    if (now - (lastSubmitRef.current || 0) < 3000) {
+      setToast({ type: "error", message: "You're sending requests too quickly. Please wait a moment." });
+      return;
+    }
+    lastSubmitRef.current = now;
 
     const formData = new FormData(formRef.current);
     const fullName = formData.get("fullName")?.toString().trim();
@@ -412,48 +531,98 @@ function ContactSection() {
     const phone = formData.get("phone")?.toString().trim();
     const service = formData.get("service")?.toString().trim();
     const message = formData.get("message")?.toString().trim();
+    const hp = formData.get("hp")?.toString();
 
-    if (!fullName || !companyName || !email || !service || !message) {
-      setToast({
-        type: "error",
-        message: "Please complete all required fields before sending your inquiry.",
-      });
+    // Honeypot spam check
+    if (hp) {
+      // silently drop spam submissions
+      setToast({ type: "error", message: "Submission blocked." });
+      return;
+    }
+
+    const newErrors = {};
+    if (!fullName) newErrors.fullName = "Full name is required.";
+    if (!companyName) newErrors.companyName = "Company name is required.";
+    if (!email) newErrors.email = "Email address is required.";
+    if (!service) newErrors.service = "Please select a service.";
+    if (!message) newErrors.message = "Please enter a message with details.";
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      setToast({ type: "error", message: "Please complete all required fields before sending your inquiry." });
       return;
     }
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email)) {
-      setToast({
-        type: "error",
-        message: "Please enter a valid email address so we can respond promptly.",
-      });
+      setErrors((prev) => ({ ...prev, email: "Please enter a valid email address." }));
+      setToast({ type: "error", message: "Please enter a valid email address so we can respond promptly." });
+      return;
+    }
+
+    if (message.length < 15) {
+      setErrors((prev) => ({ ...prev, message: "Please provide a bit more detail (15+ characters)." }));
+      setToast({ type: "error", message: "Please provide a bit more detail about your project (15+ characters)." });
+      return;
+    }
+
+    if (!RECAPTCHA_SITE_KEY) {
+      setToast({ type: "error", message: "reCAPTCHA is not configured. Please contact support." });
+      return;
+    }
+
+    if (!recaptchaReady) {
+      setToast({ type: "error", message: "Waiting for reCAPTCHA verification. Please wait a moment and try again." });
       return;
     }
 
     setIsSubmitting(true);
 
+    let recaptchaToken;
     try {
+      recaptchaToken = await executeRecaptcha();
+    } catch (recaptchaErr) {
+      console.error("reCAPTCHA error:", recaptchaErr);
+      setRecaptchaError("reCAPTCHA verification failed. Please refresh the page and try again.");
+      setToast({ type: "error", message: "reCAPTCHA verification failed. Please refresh and try again." });
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!recaptchaToken) {
+      setToast({ type: "error", message: "reCAPTCHA did not return a valid verification token. Please try again." });
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      const templateParams = {
+        from_name: fullName,
+        from_email: email,
+        company_name: companyName,
+        phone_number: phone,
+        service_interested: service,
+        message: message,
+        to_email: EMAIL_RECIPIENT,
+        submitted_at: new Date().toISOString(),
+        recaptcha_token: recaptchaToken,
+      };
+
       const result = await emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
-        {
-          from_name: fullName,
-          from_email: email,
-          company_name: companyName,
-          phone_number: phone,
-          service_interested: service,
-          message: message,
-          to_email: EMAIL_RECIPIENT,
-        }
+        templateParams,
+        EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY_HERE" ? EMAILJS_PUBLIC_KEY : undefined
       );
 
-      if (result.status === 200) {
+      if (result && (result.status === 200 || result.status === "OK" || result.text === "OK")) {
         setSubmitStatus("success");
         setToast({
           type: "success",
           message: "Your inquiry was sent successfully. Our team will reach out shortly.",
         });
         formRef.current.reset();
+        setErrors({});
       } else {
         throw new Error("EmailJS response not successful");
       }
@@ -462,7 +631,7 @@ function ContactSection() {
       setSubmitStatus("error");
       setToast({
         type: "error",
-        message: "There was an issue sending your inquiry. Please try again or email us directly.",
+        message: "There was an issue sending your inquiry. Please try again or email us directly at sales.10power6@gmail.com",
       });
     } finally {
       setIsSubmitting(false);
@@ -493,7 +662,7 @@ function ContactSection() {
       </div>
 
       {toast && (
-        <div className="fixed bottom-6 right-6 z-50 w-full max-w-sm rounded-3xl border border-slate-700/60 bg-slate-950/95 p-4 shadow-2xl shadow-slate-950/40 backdrop-blur-xl">
+        <div role="status" aria-live="polite" className="fixed bottom-6 right-6 z-50 w-full max-w-sm rounded-3xl border border-slate-700/60 bg-slate-950/95 p-4 shadow-2xl shadow-slate-950/40 backdrop-blur-xl">
           <div className={`flex items-start gap-3 ${toast.type === "success" ? "text-emerald-300" : "text-rose-300"}`}>
             <span className="mt-1 text-xl">{toast.type === "success" ? "✓" : "⚠"}</span>
             <div>
@@ -582,6 +751,8 @@ function ContactSection() {
           } rounded-2xl border border-slate-700/50 p-8 md:p-10 backdrop-blur-sm bg-gradient-to-br from-slate-800/30 via-slate-900/40 to-slate-800/30 hover:border-slate-600/50 transition-all duration-300`}
         >
           <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+            {/* Honeypot field for basic spam protection - keep hidden from users */}
+            <input type="text" name="hp" tabIndex="-1" autoComplete="off" style={{ display: "none" }} aria-hidden="true" />
             {/* Full Name & Company */}
             <div className="grid gap-6 md:grid-cols-2">
               <div className="group">
@@ -595,6 +766,9 @@ function ContactSection() {
                   placeholder="John Doe"
                   className="w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white placeholder-slate-400 transition-all focus:border-indigo-500 focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                 />
+                {errors.fullName && (
+                  <p className="mt-2 text-sm text-rose-300">{errors.fullName}</p>
+                )}
               </div>
               <div className="group">
                 <label className="block text-sm font-semibold text-slate-200 mb-2">
@@ -607,6 +781,9 @@ function ContactSection() {
                   placeholder="Acme Inc."
                   className="w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white placeholder-slate-400 transition-all focus:border-indigo-500 focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                 />
+                {errors.companyName && (
+                  <p className="mt-2 text-sm text-rose-300">{errors.companyName}</p>
+                )}
               </div>
             </div>
 
@@ -623,6 +800,9 @@ function ContactSection() {
                   placeholder="john@acme.com"
                   className="w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white placeholder-slate-400 transition-all focus:border-indigo-500 focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
                 />
+                {errors.email && (
+                  <p className="mt-2 text-sm text-rose-300">{errors.email}</p>
+                )}
               </div>
               <div className="group">
                 <label className="block text-sm font-semibold text-slate-200 mb-2">
@@ -655,6 +835,9 @@ function ContactSection() {
                 <option value="Mobile Apps">Mobile Apps</option>
                 <option value="Strategy & Support">Strategy & Support</option>
               </select>
+              {errors.service && (
+                <p className="mt-2 text-sm text-rose-300">{errors.service}</p>
+              )}
             </div>
 
             {/* Message */}
@@ -669,6 +852,9 @@ function ContactSection() {
                 rows={5}
                 className="w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white placeholder-slate-400 transition-all resize-none focus:border-indigo-500 focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
               />
+              {errors.message && (
+                <p className="mt-2 text-sm text-rose-300">{errors.message}</p>
+              )}
             </div>
 
             {/* Status Messages */}
@@ -702,6 +888,14 @@ function ContactSection() {
             <p className="text-xs text-slate-400 text-center">
               We respect your privacy. Your information will only be used to respond to your inquiry.
             </p>
+            <p className="text-xs text-slate-500 text-center">
+              Protected by Google reCAPTCHA for secure form submission.
+            </p>
+            {recaptchaError && (
+              <p className="mt-2 text-xs text-rose-300 text-center">
+                {recaptchaError}
+              </p>
+            )}
           </form>
         </div>
       </div>
@@ -722,25 +916,16 @@ function App() {
 
   return (
     <div className="bg-slate-950 text-slate-100 antialiased">
-      <header className="fixed top-0 z-50 w-full backdrop-blur-md bg-gradient-to-b from-slate-950/50 to-slate-950/20 border-b border-slate-700/20 transition-all duration-300 shadow-lg shadow-slate-950/50">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <a href="#" className="text-xl font-bold tracking-tight text-white hover:text-indigo-400 transition">
-            10Power6
-          </a>
-          <nav className="hidden gap-8 text-sm font-medium text-slate-300 md:flex">
-            <a className="transition hover:text-indigo-300" href="#services">
-              Services
-            </a>
-            <a className="transition hover:text-indigo-300" href="#process">
-              Process
-            </a>
-            <a className="transition hover:text-indigo-300" href="#about">
-              About
-            </a>
-            <a className="transition hover:text-indigo-300" href="#contact">
-              Contact
-            </a>
-          </nav>
+      <Router>
+        <header className="fixed top-0 z-50 w-full backdrop-blur-md bg-gradient-to-b from-slate-950/50 to-slate-950/20 border-b border-slate-700/20 transition-all duration-300 shadow-lg shadow-slate-950/50">
+          <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+            <BrandLogo />
+            <nav className="hidden gap-8 text-sm font-medium text-slate-300 md:flex">
+              <NavLink sectionId="services" label="Services" />
+              <NavLink sectionId="process" label="Process" />
+              <NavLink sectionId="about" label="About" />
+              <NavLink sectionId="contact" label="Contact" />
+            </nav>
           <a
             href="#contact"
             className="rounded-full bg-indigo-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-400 hover:shadow-lg hover:shadow-indigo-500/50"
@@ -750,7 +935,12 @@ function App() {
         </div>
       </header>
 
-      <main className="">
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <main className="">
         <section className="relative overflow-hidden min-h-screen w-full">
           <div className="absolute inset-0 bg-gradient-to-b from-indigo-600/20 via-slate-950 to-slate-950" />
           <div className="relative w-full min-h-screen flex items-center">
@@ -808,37 +998,7 @@ function App() {
           </div>
         </section>
 
-        <section id="services" className="mx-auto max-w-6xl px-6 py-16">
-          <div className="mb-10 max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-indigo-300">
-              Our Services
-            </p>
-            <h2 className="mt-3 text-3xl font-extrabold text-white md:text-4xl">
-              End-to-end solutions for ambitious brands
-            </h2>
-            <p className="mt-3 text-slate-300">
-              10Power6 helps startups and established businesses launch digital products, improve visibility, and accelerate growth.
-            </p>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {services.map((service) => (
-              <article
-                key={service.name}
-                className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6"
-              >
-                <h3 className="text-xl font-bold text-white">{service.name}</h3>
-                <p className="mt-3 text-sm leading-6 text-slate-300">{service.description}</p>
-              </article>
-            ))}
-            <article className="rounded-2xl border border-indigo-500/40 bg-indigo-500/10 p-6">
-              <h3 className="text-xl font-bold text-white">Strategy & Support</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-200">
-                Roadmapping, launch planning, and ongoing optimization to maximize product outcomes.
-              </p>
-            </article>
-          </div>
-        </section>
+        <ServicesSection />
 
         <ProcessSection />
 
@@ -860,6 +1020,28 @@ function App() {
 
         <ContactSection />
       </main>
+            </>
+          }
+        />
+        <Route path="/services/:slug" element={<ServicePage />} />
+      </Routes>
+      </Router>
+
+      <motion.a
+        href="tel:+1234567890"
+        aria-label="Call us"
+        initial={{ y: 0, opacity: 0 }}
+        animate={{ y: [0, -6, 0], opacity: 1 }}
+        transition={{ duration: 3, repeat: Infinity, repeatType: "loop", ease: "easeInOut" }}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.96 }}
+        className="group fixed left-4 bottom-4 z-50 flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-slate-950/95 text-white shadow-2xl shadow-indigo-500/20 backdrop-blur-xl transition-all duration-300 hover:border-indigo-400 hover:shadow-[0_0_30px_rgba(99,102,241,0.25)] sm:left-6 sm:bottom-6 sm:h-16 sm:w-16"
+      >
+        <span className="absolute -top-12 left-1/2 hidden -translate-x-1/2 rounded-full bg-slate-950/95 px-3 py-2 text-xs font-semibold text-slate-100 shadow-lg shadow-black/20 ring-1 ring-white/10 transition-all duration-300 group-hover:flex">
+          Call Us
+        </span>
+        <Phone className="h-6 w-6 sm:h-7 sm:w-7" />
+      </motion.a>
 
       <footer className="border-t border-slate-800 py-6 text-center text-sm text-slate-400">
         <p>&copy; {year} 10Power6. All rights reserved.</p>
