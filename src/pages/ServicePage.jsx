@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, Layers, ShieldCheck, Users } from "lucide-react";
 import { servicePages } from "../serviceData";
@@ -11,9 +11,23 @@ const sectionVariant = {
 
 export default function ServicePage() {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const page = servicePages[slug];
 
+  const handleStartProject = () => {
+    // Navigate to home and scroll to contact section
+    navigate("/");
+    setTimeout(() => {
+      const contactElement = document.getElementById("contact");
+      if (contactElement) {
+        contactElement.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 200);
+  };
+
   useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+
     if (!page) {
       document.title = "Service not found | 10Power6";
       return;
@@ -74,19 +88,13 @@ export default function ServicePage() {
               {page.hero.subheading}
             </p>
             <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
-              <a
-                href="/#contact"
-                className="inline-flex items-center justify-center gap-3 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/20 transition hover:opacity-95"
+              <button
+                onClick={handleStartProject}
+                className="inline-flex items-center justify-center gap-3 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/20 transition hover:opacity-95 cursor-pointer"
               >
-                {page.hero.cta}
+                Start Your Project
                 <ArrowRight className="h-4 w-4" />
-              </a>
-              <Link
-                to="/"
-                className="inline-flex items-center justify-center rounded-full border border-slate-700 bg-slate-900/80 px-6 py-3 text-sm font-semibold text-slate-100 transition hover:border-indigo-500 hover:text-indigo-300"
-              >
-                Back to Services
-              </Link>
+              </button>
             </div>
           </motion.div>
 
@@ -218,19 +226,13 @@ export default function ServicePage() {
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">
-              <a
-                href="/#contact"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-indigo-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/20 transition hover:bg-indigo-400"
+              <button
+                onClick={handleStartProject}
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-indigo-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/20 transition hover:bg-indigo-400 cursor-pointer"
               >
                 Start Your Project
                 <ArrowRight className="h-4 w-4" />
-              </a>
-              <a
-                href="/#contact"
-                className="inline-flex items-center justify-center rounded-full border border-slate-700 bg-slate-900/80 px-6 py-3 text-sm font-semibold text-slate-100 transition hover:border-indigo-500 hover:text-indigo-300"
-              >
-                Book a Consultation
-              </a>
+              </button>
             </div>
           </div>
         </motion.section>

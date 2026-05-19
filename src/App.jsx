@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, useRef } from "react";
 import emailjs from "@emailjs/browser";
 import { motion } from "framer-motion";
 import { BrowserRouter as Router, Link, Route, Routes, useNavigate, useLocation } from "react-router-dom";
-import { Brain, PenTool, Code2, CheckCircle2, Rocket, ShieldCheck, TrendingUp, Smartphone, MonitorSmartphone, BarChart3, LifeBuoy, Bot, Phone } from "lucide-react";
+import { Brain, PenTool, Code2, CheckCircle2, Rocket, ShieldCheck, TrendingUp, Smartphone, MonitorSmartphone, BarChart3, LifeBuoy, Bot, Phone, Menu, X, ChevronDown } from "lucide-react";
 import logoFileUrl from "./assets/10Power6Logo.png";
 import ServicePage from "./pages/ServicePage";
 
@@ -224,6 +224,151 @@ function BrandLogo() {
       />
       <span className="sr-only">10Power6</span>
     </motion.a>
+  );
+}
+
+function MobileMenu() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
+  const navigate = useSmartNavigation();
+  const router = useNavigate();
+
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "";
+    document.documentElement.style.overflow = isOpen ? "hidden" : "";
+    document.body.style.position = isOpen ? "fixed" : "";
+    return () => {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+      document.body.style.position = "";
+    };
+  }, [isOpen]);
+
+  const closeMenu = () => {
+    setIsOpen(false);
+    setServicesOpen(false);
+  };
+
+  const handleNavClick = (sectionId) => {
+    navigate(sectionId);
+    closeMenu();
+  };
+
+  const handleServiceClick = (slug) => {
+    router(`/services/${slug}`);
+    closeMenu();
+  };
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setIsOpen((current) => !current)}
+        aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+        aria-expanded={isOpen}
+        className="inline-flex items-center justify-center rounded-lg p-2 text-white hover:bg-white/5"
+      >
+        {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+      </button>
+
+      {isOpen && (
+        <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.18 }}
+            className="fixed inset-0 z-40"
+            style={{ background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
+            aria-hidden="true"
+            onClick={closeMenu}
+          />
+
+          <motion.aside
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -20, opacity: 0 }}
+            transition={{ duration: 0.28, ease: "easeOut" }}
+            className="fixed inset-0 z-50 h-screen w-screen flex flex-col overflow-y-auto bg-slate-900 p-6 md:hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Mobile navigation"
+          >
+            <div className="flex items-center justify-between">
+              <BrandLogo />
+              <button
+                type="button"
+                onClick={closeMenu}
+                aria-label="Close navigation menu"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 text-white shadow-2xl ring-1 ring-white/12 transition hover:bg-white/16"
+              >
+                <X className="h-5 w-5 text-white" />
+              </button>
+            </div>
+
+            <nav className="mt-12 flex flex-col gap-6 text-2xl font-extrabold text-white">
+              <button
+                type="button"
+                onClick={() => setServicesOpen((current) => !current)}
+                className="flex items-center justify-between rounded-3xl border border-white/12 bg-slate-900 px-6 py-5 text-left transition hover:border-white/20 hover:bg-slate-800/95"
+              >
+                <span className="text-white">Services</span>
+                <span className={`${servicesOpen ? "rotate-180" : "rotate-0"} transition-transform duration-200`}>
+                  <ChevronDown className="h-5 w-5 text-white" />
+                </span>
+              </button>
+
+              {servicesOpen && (
+                <div className="space-y-3 rounded-3xl border border-white/12 bg-slate-900 p-4">
+                  {services.map((service) => (
+                    <button
+                      key={service.slug}
+                      type="button"
+                      onClick={() => handleServiceClick(service.slug)}
+                      className="w-full rounded-2xl px-4 py-3 text-left text-sm text-slate-100 transition hover:bg-slate-700/80 hover:text-white"
+                    >
+                      {service.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              <button
+                type="button"
+                onClick={() => handleNavClick("process")}
+                className="rounded-3xl border border-white/12 bg-slate-900 px-6 py-5 text-left text-white transition hover:border-white/20 hover:bg-slate-800/95"
+              >
+                Process
+              </button>
+              <button
+                type="button"
+                onClick={() => handleNavClick("about")}
+                className="rounded-3xl border border-white/12 bg-slate-900 px-6 py-5 text-left text-white transition hover:border-white/20 hover:bg-slate-800/95"
+              >
+                About
+              </button>
+              <button
+                type="button"
+                onClick={() => handleNavClick("contact")}
+                className="rounded-3xl border border-white/12 bg-slate-900 px-6 py-5 text-left text-white transition hover:border-white/20 hover:bg-slate-800/95"
+              >
+                Contact
+              </button>
+            </nav>
+
+            <div className="mt-auto pt-6">
+              <button
+                type="button"
+                onClick={() => handleNavClick("contact")}
+                className="w-full rounded-full bg-indigo-500 px-5 py-4 text-sm font-semibold text-white transition hover:bg-indigo-400 hover:shadow-2xl"
+              >
+                Start a Project
+              </button>
+            </div>
+          </motion.aside>
+        </>
+      )}
+    </>
   );
 }
 
@@ -829,6 +974,7 @@ function ContactSection() {
               >
                 <option value="">Select a service...</option>
                 <option value="Web Applications">Web Applications</option>
+                <option value="Ai Integration">Ai Integration</option>
                 <option value="Digital Marketing">Digital Marketing</option>
                 <option value="SEO">SEO</option>
                 <option value="Websites">Websites</option>
@@ -903,6 +1049,16 @@ function ContactSection() {
   );
 }
 
+function ScrollToTop() {
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  }, [location.pathname]);
+
+  return null;
+}
+
 function App() {
   const [activeIndex, setActiveIndex] = useState(0);
   const year = useMemo(() => new Date().getFullYear(), []);
@@ -917,23 +1073,38 @@ function App() {
   return (
     <div className="bg-slate-950 text-slate-100 antialiased overflow-x-hidden">
       <Router>
-        <header className="fixed top-0 z-50 w-full backdrop-blur-md bg-gradient-to-b from-slate-950/50 to-slate-950/20 border-b border-slate-700/20 transition-all duration-300 shadow-lg shadow-slate-950/50">
-          <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-            <BrandLogo />
-            <nav className="hidden gap-8 text-sm font-medium text-slate-300 md:flex">
-              <NavLink sectionId="services" label="Services" />
-              <NavLink sectionId="process" label="Process" />
-              <NavLink sectionId="about" label="About" />
-              <NavLink sectionId="contact" label="Contact" />
-            </nav>
-          <a
-            href="#contact"
-            className="rounded-full bg-indigo-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-400 hover:shadow-lg hover:shadow-indigo-500/50"
-          >
-            Start a Project
-          </a>
-        </div>
-      </header>
+        <ScrollToTop />
+        <header className="fixed top-0 z-40 w-full backdrop-blur-md bg-gradient-to-b from-slate-950/50 to-slate-950/20 border-b border-slate-700/20 transition-all duration-300 shadow-lg shadow-slate-950/50">
+          <div className="relative mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+            <div className="flex items-center gap-4">
+              <MobileMenu />
+              <div className="hidden md:block">
+                <BrandLogo />
+              </div>
+            </div>
+
+            <div className="pointer-events-none absolute inset-x-0 top-1/2 hidden -translate-y-1/2 justify-center md:flex">
+              <nav className="pointer-events-auto flex gap-8 text-sm font-medium text-slate-300">
+                <NavLink sectionId="services" label="Services" />
+                <NavLink sectionId="process" label="Process" />
+                <NavLink sectionId="about" label="About" />
+                <NavLink sectionId="contact" label="Contact" />
+              </nav>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <a
+                href="#contact"
+                className="hidden rounded-full bg-indigo-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-400 hover:shadow-lg hover:shadow-indigo-500/50 md:inline-flex"
+              >
+                Start a Project
+              </a>
+              <div className="md:hidden pr-16">
+                <BrandLogo />
+              </div>
+            </div>
+          </div>
+        </header>
 
       <Routes>
         <Route
