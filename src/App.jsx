@@ -266,7 +266,7 @@ function MobileMenu() {
         onClick={() => setIsOpen((current) => !current)}
         aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
         aria-expanded={isOpen}
-        className="inline-flex items-center justify-center rounded-lg p-2 text-white hover:bg-white/5"
+        className="inline-flex items-center justify-center rounded-lg p-2 text-white hover:bg-white/5 md:hidden"
       >
         {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
       </button>
