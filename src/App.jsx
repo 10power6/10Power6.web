@@ -662,7 +662,7 @@ function ContactSection() {
       </div>
 
       {toast && (
-        <div role="status" aria-live="polite" className="fixed bottom-6 right-6 z-50 w-full max-w-sm rounded-3xl border border-slate-700/60 bg-slate-950/95 p-4 shadow-2xl shadow-slate-950/40 backdrop-blur-xl">
+        <div role="status" aria-live="polite" className="fixed inset-x-6 bottom-6 z-50 mx-auto max-w-sm rounded-3xl border border-slate-700/60 bg-slate-950/95 p-4 shadow-2xl shadow-slate-950/40 backdrop-blur-xl">
           <div className={`flex items-start gap-3 ${toast.type === "success" ? "text-emerald-300" : "text-rose-300"}`}>
             <span className="mt-1 text-xl">{toast.type === "success" ? "✓" : "⚠"}</span>
             <div>
@@ -915,7 +915,7 @@ function App() {
   }, []);
 
   return (
-    <div className="bg-slate-950 text-slate-100 antialiased">
+    <div className="bg-slate-950 text-slate-100 antialiased overflow-x-hidden">
       <Router>
         <header className="fixed top-0 z-50 w-full backdrop-blur-md bg-gradient-to-b from-slate-950/50 to-slate-950/20 border-b border-slate-700/20 transition-all duration-300 shadow-lg shadow-slate-950/50">
           <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
