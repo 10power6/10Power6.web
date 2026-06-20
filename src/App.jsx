@@ -755,10 +755,15 @@ function ContactSection() {
         recaptcha_token: recaptchaToken,
       };
 
+      console.log("PUBLIC KEY:", EMAILJS_PUBLIC_KEY);
+      console.log("SERVICE ID:", EMAILJS_SERVICE_ID);
+console.log("TEMPLATE ID:", EMAILJS_TEMPLATE_ID);
+
       const result = await emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
         templateParams,
+      
         EMAILJS_PUBLIC_KEY && EMAILJS_PUBLIC_KEY !== "YOUR_PUBLIC_KEY_HERE" ? EMAILJS_PUBLIC_KEY : undefined
       );
 
