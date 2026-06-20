@@ -608,6 +608,8 @@ function ContactSection() {
 
     const script = document.createElement("script");
     script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
+    console.log("RECAPTCHA KEY:", RECAPTCHA_SITE_KEY);
+
     script.async = true;
     script.defer = true;
     script.onload = () => setRecaptchaReady(true);
