@@ -1,6 +1,8 @@
 import heroImg from "../../assets/services/strategy-support/hero.webp";
 import overviewImg from "../../assets/services/strategy-support/overview.webp";
 import featureImg from "../../assets/services/strategy-support/feature.webp";
+import showcaseOneImg from "../../assets/services/strategy-support/showcase-one.webp";
+import showcaseTwoImg from "../../assets/services/strategy-support/showcase-two.webp";
 
 export default {
   slug: "strategy-support",
@@ -15,6 +17,10 @@ export default {
     overviewAlt: "Professional team meeting to discuss technology strategy and support",
     feature: featureImg,
     featureAlt: "Team collaboration session for software project planning",
+    showcaseOne: showcaseOneImg,
+    showcaseOneAlt: "Business strategy presentation in a modern conference room",
+    showcaseTwo: showcaseTwoImg,
+    showcaseTwoAlt: "Cross-functional team collaborating on product roadmap planning",
   },
   hero: {
     headline: "Strategic Guidance and Support That Keeps Your Technology Future-Ready",
@@ -68,8 +74,40 @@ export default {
       "Quarterly strategy review sessions",
     ],
   },
-  technologies: ["React", "Laravel", "Node.js", "AWS", "Docker", "PostgreSQL", "GitHub", "Jira", "Figma", "TypeScript", "PHP", "MySQL"],
-  industries: ["SaaS & Technology", "Healthcare", "Finance & Fintech", "E-Commerce", "Education", "Professional Services", "Startups", "Enterprise"],
+  technologies: [
+    "React",
+    "Laravel",
+    "Node.js",
+    "TypeScript",
+    "AWS",
+    "Azure",
+    "Docker",
+    "Kubernetes",
+    "PostgreSQL",
+    "MySQL",
+    "Jira",
+    "Confluence",
+    "Notion",
+    "Linear",
+    "Azure DevOps",
+    "Figma",
+    "Slack",
+    "GitHub",
+  ],
+  industries: [
+    "SaaS & Technology",
+    "Healthcare",
+    "Finance & Fintech",
+    "E-Commerce",
+    "Education",
+    "Professional Services",
+    "Startups",
+    "Enterprise",
+    "Manufacturing",
+    "Non-Profit & Government",
+    "Insurance",
+    "Energy",
+  ],
   process: {
     title: "Our Consulting & Support Process",
     subtitle: "A partnership model that adapts to your needs — from one-time assessments to ongoing retained support.",

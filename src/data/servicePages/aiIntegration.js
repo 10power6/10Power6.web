@@ -1,6 +1,8 @@
 import heroImg from "../../assets/services/ai-integration/hero.webp";
 import overviewImg from "../../assets/services/ai-integration/overview.webp";
 import featureImg from "../../assets/services/ai-integration/feature.webp";
+import showcaseOneImg from "../../assets/services/ai-integration/showcase-one.webp";
+import showcaseTwoImg from "../../assets/services/ai-integration/showcase-two.webp";
 
 export default {
   slug: "ai-integration",
@@ -15,6 +17,10 @@ export default {
     overviewAlt: "AI and machine learning concept with digital brain imagery",
     feature: featureImg,
     featureAlt: "Robot and AI technology representing intelligent automation",
+    showcaseOne: showcaseOneImg,
+    showcaseOneAlt: "AI and machine learning visualization with data streams",
+    showcaseTwo: showcaseTwoImg,
+    showcaseTwoAlt: "Matrix-style data representing intelligent automation systems",
   },
   hero: {
     headline: "Transform Your Business with Intelligent AI Integration",
@@ -68,8 +74,40 @@ export default {
       "Ongoing optimization and model fine-tuning support",
     ],
   },
-  technologies: ["OpenAI API", "Python", "Node.js", "React", "LangChain", "PostgreSQL", "AWS", "Docker", "REST APIs", "TypeScript", "Redis", "GitHub"],
-  industries: ["SaaS & Technology", "Healthcare", "Finance & Fintech", "E-Commerce", "Customer Support", "Legal & Compliance", "Manufacturing", "Marketing & Advertising"],
+  technologies: [
+    "OpenAI API",
+    "Claude API",
+    "Gemini",
+    "Python",
+    "LangChain",
+    "n8n",
+    "FastAPI",
+    "TensorFlow",
+    "Hugging Face",
+    "Node.js",
+    "React",
+    "PostgreSQL",
+    "Pinecone",
+    "Supabase",
+    "AWS",
+    "Docker",
+    "Redis",
+    "GitHub",
+  ],
+  industries: [
+    "SaaS & Technology",
+    "Healthcare",
+    "Finance & Fintech",
+    "E-Commerce",
+    "Customer Support",
+    "Legal & Compliance",
+    "Manufacturing",
+    "Marketing & Advertising",
+    "Professional Services",
+    "Insurance",
+    "Retail & E-Commerce",
+    "Enterprise",
+  ],
   process: {
     title: "Our AI Integration Process",
     subtitle: "A methodical approach that ensures AI solutions are practical, secure, and aligned with your business goals.",

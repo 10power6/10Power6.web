@@ -1,4 +1,4 @@
-import { Code2, Cpu, TrendingUp, Smartphone, MonitorSmartphone, BarChart3, ShieldCheck } from "lucide-react";
+import { Code2, Cpu, TrendingUp, Smartphone, MonitorSmartphone, Briefcase, ShieldCheck } from "lucide-react";
 import { servicePages, servicePageSlugs } from "./data/servicePages";
 
 export const services = [
@@ -43,11 +43,11 @@ export const services = [
     color: "from-green-600/20 to-emerald-500/10",
   },
   {
-    name: "SEO",
-    slug: "seo",
+    name: "IT Consultancy",
+    slug: "it-consultancy",
     description:
-      "Advanced SEO strategies designed to improve search engine rankings, increase organic traffic, and strengthen long-term online authority. We optimize technical SEO, on-page content, and performance to help businesses dominate search results.",
-    Icon: BarChart3,
+      "Expert technology advisory to help you assess systems, plan infrastructure, reduce IT risk, and make confident decisions. From cloud strategy and vendor selection to security reviews and digital transformation roadmaps.",
+    Icon: Briefcase,
     color: "from-amber-500/20 to-orange-500/10",
   },
   {

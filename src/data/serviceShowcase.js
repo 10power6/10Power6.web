@@ -6,7 +6,7 @@ export const serviceShowcaseBlocks = {
   "web-applications": [
     {
       type: "parallax",
-      imageKey: "hero",
+      imageKey: "showcaseOne",
       label: "Built for Scale",
       title: "Software that grows with your business",
       description:
@@ -14,7 +14,7 @@ export const serviceShowcaseBlocks = {
     },
     {
       type: "split",
-      imageKey: "overview",
+      imageKey: "showcaseTwo",
       imagePosition: "left",
       theme: "light",
       label: "Product Engineering",
@@ -35,7 +35,7 @@ export const serviceShowcaseBlocks = {
   "ai-integration": [
     {
       type: "parallax",
-      imageKey: "hero",
+      imageKey: "showcaseOne",
       label: "Intelligent Systems",
       title: "AI that works inside your existing workflows",
       description:
@@ -43,7 +43,7 @@ export const serviceShowcaseBlocks = {
     },
     {
       type: "floating",
-      imageKey: "overview",
+      imageKey: "showcaseTwo",
       theme: "dark",
       label: "Human + Machine",
       title: "Augment teams, don't replace them",
@@ -63,7 +63,7 @@ export const serviceShowcaseBlocks = {
   "digital-marketing": [
     {
       type: "parallax",
-      imageKey: "hero",
+      imageKey: "showcaseOne",
       label: "Growth Engine",
       title: "Marketing that connects strategy to revenue",
       description:
@@ -71,7 +71,7 @@ export const serviceShowcaseBlocks = {
     },
     {
       type: "split",
-      imageKey: "overview",
+      imageKey: "showcaseTwo",
       imagePosition: "right",
       theme: "light",
       label: "Full-Funnel",
@@ -92,7 +92,7 @@ export const serviceShowcaseBlocks = {
   "mobile-applications": [
     {
       type: "parallax",
-      imageKey: "hero",
+      imageKey: "showcaseOne",
       label: "Mobile First",
       title: "Apps people open again and again",
       description:
@@ -100,7 +100,7 @@ export const serviceShowcaseBlocks = {
     },
     {
       type: "split",
-      imageKey: "overview",
+      imageKey: "showcaseTwo",
       imagePosition: "left",
       theme: "light",
       label: "End-to-End",
@@ -121,7 +121,7 @@ export const serviceShowcaseBlocks = {
   websites: [
     {
       type: "parallax",
-      imageKey: "hero",
+      imageKey: "showcaseOne",
       label: "Brand Presence",
       title: "Websites that communicate authority instantly",
       description:
@@ -129,7 +129,7 @@ export const serviceShowcaseBlocks = {
     },
     {
       type: "floating",
-      imageKey: "overview",
+      imageKey: "showcaseTwo",
       theme: "dark",
       label: "Craft & Performance",
       title: "Beautiful on every screen, blazing fast everywhere",
@@ -146,39 +146,39 @@ export const serviceShowcaseBlocks = {
         "Hosting setup, analytics, forms, and security configured before launch — so your site works hard from day one.",
     },
   ],
-  seo: [
+  "it-consultancy": [
     {
       type: "parallax",
-      imageKey: "hero",
-      label: "Search Dominance",
-      title: "Organic visibility that compounds over time",
+      imageKey: "showcaseOne",
+      label: "Strategic Guidance",
+      title: "Technology decisions with clarity and confidence",
       description:
-        "Technical SEO, content strategy, and authority building designed for sustainable rankings — not quick fixes.",
+        "Independent advisory that aligns infrastructure, software, and security investments with your business goals — before costly commitments are made.",
     },
     {
       type: "split",
-      imageKey: "overview",
+      imageKey: "showcaseTwo",
       imagePosition: "right",
       theme: "light",
-      label: "Technical + Content",
-      title: "Fix the foundation, then grow the footprint",
+      label: "Assess & Plan",
+      title: "Understand your landscape, then build the roadmap",
       description:
-        "Site audits, on-page optimization, and content plans that align search intent with your business offerings.",
-      bullets: ["Technical audits", "Keyword strategy", "Content optimization"],
+        "We audit systems, evaluate vendors, and deliver prioritized recommendations your leadership team can act on immediately.",
+      bullets: ["Technology assessments", "Cloud strategy", "Vendor evaluation"],
     },
     {
       type: "parallax",
       imageKey: "feature",
-      label: "Transparent Results",
-      title: "Track progress you can trust",
+      label: "Future Ready",
+      title: "Infrastructure built to scale with you",
       description:
-        "Clear reporting on rankings, traffic, and conversions — with actionable recommendations every month.",
+        "Roadmaps and architecture guidance designed for growth — reducing rework and keeping your technology stack lean and effective.",
     },
   ],
   "strategy-support": [
     {
       type: "parallax",
-      imageKey: "hero",
+      imageKey: "showcaseOne",
       label: "Strategic Partner",
       title: "Technology decisions with long-term clarity",
       description:
@@ -186,7 +186,7 @@ export const serviceShowcaseBlocks = {
     },
     {
       type: "split",
-      imageKey: "overview",
+      imageKey: "showcaseTwo",
       imagePosition: "left",
       theme: "light",
       label: "Advisory",

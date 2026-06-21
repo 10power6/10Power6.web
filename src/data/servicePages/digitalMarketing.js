@@ -1,6 +1,8 @@
 import heroImg from "../../assets/services/digital-marketing/hero.webp";
 import overviewImg from "../../assets/services/digital-marketing/overview.webp";
 import featureImg from "../../assets/services/digital-marketing/feature.webp";
+import showcaseOneImg from "../../assets/services/digital-marketing/showcase-one.webp";
+import showcaseTwoImg from "../../assets/services/digital-marketing/showcase-two.webp";
 
 export default {
   slug: "digital-marketing",
@@ -15,6 +17,10 @@ export default {
     overviewAlt: "Developer workspace representing digital marketing and analytics tools",
     feature: featureImg,
     featureAlt: "Marketing analytics and growth strategy visualization",
+    showcaseOne: showcaseOneImg,
+    showcaseOneAlt: "Analytics dashboard showing marketing campaign performance metrics",
+    showcaseTwo: showcaseTwoImg,
+    showcaseTwoAlt: "Digital marketing team reviewing growth strategy on laptop",
   },
   hero: {
     headline: "Data-Driven Digital Marketing That Converts Traffic Into Revenue",
@@ -68,8 +74,40 @@ export default {
       "Ongoing campaign management and optimization",
     ],
   },
-  technologies: ["Google Ads", "Meta Ads", "Google Analytics", "HubSpot", "Mailchimp", "SEMrush", "Hotjar", "WordPress", "React", "JavaScript", "Canva", "GitHub"],
-  industries: ["SaaS & Technology", "E-Commerce", "Healthcare", "Professional Services", "Real Estate", "Education", "Hospitality", "Finance & Fintech"],
+  technologies: [
+    "Google Ads",
+    "Meta Ads",
+    "LinkedIn Ads",
+    "TikTok",
+    "Google Analytics",
+    "Google Tag Manager",
+    "HubSpot",
+    "Mailchimp",
+    "SEMrush",
+    "Ahrefs",
+    "Hotjar",
+    "Shopify",
+    "WordPress",
+    "Zapier",
+    "Canva",
+    "React",
+    "JavaScript",
+    "GitHub",
+  ],
+  industries: [
+    "SaaS & Technology",
+    "E-Commerce",
+    "Healthcare",
+    "Professional Services",
+    "Real Estate",
+    "Education",
+    "Hospitality",
+    "Finance & Fintech",
+    "Creative Agencies",
+    "Food & Beverage",
+    "Travel & Tourism",
+    "Retail & E-Commerce",
+  ],
   process: {
     title: "Our Marketing Process",
     subtitle: "A proven framework that turns marketing strategy into measurable growth results.",

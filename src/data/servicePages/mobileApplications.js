@@ -1,6 +1,8 @@
 import heroImg from "../../assets/services/mobile-applications/hero.webp";
 import overviewImg from "../../assets/services/mobile-applications/overview.webp";
 import featureImg from "../../assets/services/mobile-applications/feature.webp";
+import showcaseOneImg from "../../assets/services/mobile-applications/showcase-one.webp";
+import showcaseTwoImg from "../../assets/services/mobile-applications/showcase-two.webp";
 
 export default {
   slug: "mobile-applications",
@@ -15,6 +17,10 @@ export default {
     overviewAlt: "Collection of mobile devices showcasing app interfaces",
     feature: featureImg,
     featureAlt: "Person using a mobile application on smartphone",
+    showcaseOne: showcaseOneImg,
+    showcaseOneAlt: "Hand holding smartphone displaying a modern mobile app interface",
+    showcaseTwo: showcaseTwoImg,
+    showcaseTwoAlt: "Mobile app UI design concepts on a desk with phone mockups",
   },
   hero: {
     headline: "Mobile Apps That Users Love and Businesses Depend On",
@@ -68,8 +74,40 @@ export default {
       "Post-launch support and update roadmap",
     ],
   },
-  technologies: ["React Native", "Swift", "Kotlin", "Node.js", "Firebase", "PostgreSQL", "AWS", "REST APIs", "TypeScript", "Docker", "GitHub", "Figma"],
-  industries: ["E-Commerce", "Healthcare", "Finance & Fintech", "Logistics & Delivery", "Education", "Fitness & Wellness", "Real Estate", "SaaS & Technology"],
+  technologies: [
+    "React Native",
+    "Flutter",
+    "Expo",
+    "Swift",
+    "Kotlin",
+    "Firebase",
+    "Node.js",
+    "GraphQL",
+    "PostgreSQL",
+    "Redux",
+    "AWS",
+    "Docker",
+    "App Store",
+    "Google Play",
+    "TypeScript",
+    "Figma",
+    "REST APIs",
+    "GitHub",
+  ],
+  industries: [
+    "E-Commerce",
+    "Healthcare",
+    "Finance & Fintech",
+    "Logistics & Delivery",
+    "Education",
+    "Fitness & Wellness",
+    "Real Estate",
+    "SaaS & Technology",
+    "Hospitality",
+    "Food & Beverage",
+    "Travel & Tourism",
+    "Media & Entertainment",
+  ],
   process: {
     title: "Our Mobile App Development Process",
     subtitle: "A user-centered approach that delivers polished apps on time and within budget.",

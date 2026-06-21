@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import ServiceSection, { ServiceSectionHeading } from "./services/ServiceSection";
+import { ServiceSectionHeading } from "./services/ServiceSection";
 import { getThemeClasses } from "./services/theme";
 import { testimonials, CARD_WIDTHS } from "../data/testimonialsData";
 import { sectionVariant } from "../utils/motionVariants";
@@ -44,48 +44,56 @@ function TestimonialCard({ testimonial, theme }) {
 }
 
 export default function TestimonialsSection({ theme = "dark" }) {
+  const t = getThemeClasses(theme);
   const duplicated = [...testimonials, ...testimonials];
   const fadeFrom = theme === "dark" ? "from-slate-950" : "from-white";
+  const fadeVia = theme === "dark" ? "via-slate-950/80" : "via-white/80";
 
   return (
-    <ServiceSection theme={theme} id="testimonials" ariaLabelledBy="testimonials-heading" className="relative overflow-hidden">
+    <section
+      id="testimonials"
+      aria-labelledby="testimonials-heading"
+      className={`relative overflow-x-clip py-20 lg:py-28 ${t.section}`}
+    >
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute left-1/4 top-0 h-72 w-72 rounded-full bg-indigo-500/10 blur-3xl" />
         <div className="absolute bottom-0 right-1/4 h-64 w-64 rounded-full bg-purple-500/8 blur-3xl" />
       </div>
 
-      <motion.div
-        variants={sectionVariant}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, amount: 0.25 }}
-        className="mb-14"
-      >
-        <ServiceSectionHeading
-          theme={theme}
-          label="Client Testimonials"
-          title="Trusted by Businesses Building Their Next Big Thing"
-          description="See what our clients say about working with 10Power6."
-          titleId="testimonials-heading"
-        />
-      </motion.div>
+      <div className="mx-auto max-w-7xl px-6">
+        <motion.div
+          variants={sectionVariant}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.25 }}
+          className="mb-14"
+        >
+          <ServiceSectionHeading
+            theme={theme}
+            label="Client Testimonials"
+            title="Trusted by Businesses Building Their Next Big Thing"
+            description="See what our clients say about working with 10Power6."
+            titleId="testimonials-heading"
+          />
+        </motion.div>
+      </div>
 
-      <div className="group/marquee relative overflow-hidden">
+      <div className="group/marquee relative w-full overflow-hidden">
         <div
-          className={`pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r sm:w-32 ${fadeFrom} to-transparent`}
+          className={`pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r sm:w-24 md:w-32 lg:w-40 ${fadeFrom} ${fadeVia} to-transparent`}
           aria-hidden="true"
         />
         <div
-          className={`pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l sm:w-32 ${fadeFrom} to-transparent`}
+          className={`pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l sm:w-24 md:w-32 lg:w-40 ${fadeFrom} ${fadeVia} to-transparent`}
           aria-hidden="true"
         />
 
-        <div className="flex w-max gap-5 py-1 animate-testimonial-marquee group-hover/marquee:[animation-play-state:paused]">
+        <div className="flex w-max gap-5 py-1 pl-5 animate-testimonial-marquee group-hover/marquee:[animation-play-state:paused] sm:gap-6 sm:pl-6 md:pl-8">
           {duplicated.map((testimonial, index) => (
             <TestimonialCard key={`${testimonial.name}-${index}`} testimonial={testimonial} theme={theme} />
           ))}
         </div>
       </div>
-    </ServiceSection>
+    </section>
   );
 }

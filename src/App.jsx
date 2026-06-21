@@ -2,7 +2,9 @@ import { useEffect, useMemo, useState, useRef } from "react";
 import emailjs from "@emailjs/browser";
 import { motion } from "framer-motion";
 import { BrowserRouter as Router, Link, Route, Routes, useNavigate, useLocation } from "react-router-dom";
-import { Brain, PenTool, Code2, CheckCircle2, Rocket, ShieldCheck, TrendingUp, Smartphone, MonitorSmartphone, BarChart3, LifeBuoy, Bot, Phone, Menu, X, ChevronDown } from "lucide-react";
+import ProcessStepsGrid from "./components/ProcessStepsGrid";
+import { homeProcessSteps } from "./data/processVisuals";
+import { Code2, TrendingUp, Smartphone, MonitorSmartphone, Briefcase, LifeBuoy, Bot, Phone, Menu, X, ChevronDown } from "lucide-react";
 import logoFileUrl from "./assets/10Power6Logo.png";
 import ServicePage from "./pages/ServicePage";
 import AboutPage from "./pages/AboutPage";
@@ -55,11 +57,11 @@ const services = [
     color: "from-green-600/20 to-emerald-500/10",
   },
   {
-    name: "SEO",
-    slug: "seo",
+    name: "IT Consultancy",
+    slug: "it-consultancy",
     description:
-      "Advanced SEO strategies designed to improve search engine rankings, increase organic traffic, and strengthen long-term online authority. We optimize technical SEO, on-page content, and performance to help businesses dominate search results.",
-    Icon: BarChart3,
+      "Expert technology advisory to help you assess systems, plan infrastructure, reduce IT risk, and make confident decisions. From cloud strategy and vendor selection to security reviews and digital transformation roadmaps.",
+    Icon: Briefcase,
     color: "from-amber-500/20 to-orange-500/10",
   },
   {
@@ -71,57 +73,6 @@ const services = [
     color: "from-indigo-600/20 to-blue-500/10",
   },
  
-];
-
-const processStages = [
-  {
-    number: "01",
-    title: "Ideate",
-    description: "We collaborate with you to define the vision, strategy, and core objectives that will drive your product's success.",
-    icon: Brain,
-    color: "from-amber-500/30 to-orange-500/20",
-    iconGradient: "from-blue-500/25 via-violet-500/20 to-cyan-400/15",
-  },
-  {
-    number: "02",
-    title: "Design",
-    description: "Expert UX/UI design that balances aesthetics with functionality, creating intuitive experiences users love.",
-    icon: PenTool,
-    color: "from-purple-500/30 to-pink-500/20",
-    iconGradient: "from-violet-500/25 via-cyan-400/20 to-slate-900/15",
-  },
-  {
-    number: "03",
-    title: "Develop",
-    description: "Scalable, robust development using modern tech stacks, ensuring clean code and optimal performance.",
-    icon: Code2,
-    color: "from-blue-500/30 to-cyan-500/20",
-    iconGradient: "from-blue-500/25 via-cyan-400/20 to-indigo-500/15",
-  },
-  {
-    number: "04",
-    title: "Test",
-    description: "Rigorous quality assurance and testing across all platforms to ensure reliability and superior user experience.",
-    icon: CheckCircle2,
-    color: "from-green-500/30 to-emerald-500/20",
-    iconGradient: "from-cyan-400/25 via-green-400/20 to-slate-900/15",
-  },
-  {
-    number: "05",
-    title: "Launch",
-    description: "Strategic deployment with optimization, monitoring, and launch marketing to maximize impact and reach.",
-    icon: Rocket,
-    color: "from-indigo-500/30 to-blue-500/20",
-    iconGradient: "from-fuchsia-500/25 via-pink-500/20 to-indigo-500/15",
-  },
-  {
-    number: "06",
-    title: "Support",
-    description: "Ongoing maintenance, updates, and optimization to keep your product performing at peak levels.",
-    icon: ShieldCheck,
-    color: "from-cyan-500/30 to-teal-500/20",
-    iconGradient: "from-cyan-400/25 via-blue-500/20 to-slate-900/15",
-  }, 
 ];
 
 // Custom hook for navigation with scroll-to-section logic
@@ -516,96 +467,16 @@ function ServicesSection() {
 }
 
 function ProcessSection() {
-  const [activeStep, setActiveStep] = useState(-1);
-  const [revealedSteps, setRevealedSteps] = useState(new Set());
-
-  useEffect(() => {
-    const observers = new Map();
-
-    processStages.forEach((_, index) => {
-      const element = document.querySelector(`[data-step-index="${index}"]`);
-      if (!element) return;
-
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setRevealedSteps((prev) => new Set([...prev, index]));
-            setActiveStep(index);
-          }
-        },
-        { threshold: 0.35 }
-      );
-
-      observer.observe(element);
-      observers.set(index, observer);
-    });
-
-    return () => {
-      observers.forEach((observer) => observer.disconnect());
-    };
-  }, []);
-
   return (
-    <ServiceSection theme="dark" id="process" ariaLabelledBy="process-heading" className="relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-8 top-12 h-72 w-72 rounded-full bg-gradient-to-br from-indigo-500/10 to-transparent blur-3xl" />
-        <div className="absolute right-8 bottom-12 h-64 w-64 rounded-full bg-gradient-to-br from-purple-500/10 to-transparent blur-3xl" />
-        <div className="absolute left-1/2 top-24 h-1/2 w-[360px] -translate-x-1/2 rounded-full bg-gradient-to-r from-white/5 via-indigo-400/5 to-transparent blur-xl" />
-      </div>
-
-      <div className="mx-auto max-w-3xl pb-12 text-center">
-        <p className="text-sm font-semibold uppercase tracking-[0.28em] text-indigo-300">Product Development Process</p>
-        <h2 id="process-heading" className="mt-4 text-4xl font-extrabold leading-tight text-white md:text-5xl">Product Development Process</h2>
-        <p className="mt-4 text-lg leading-8 text-slate-300">
-          Our streamlined development workflow transforms ideas into scalable digital products through strategy, design, engineering, testing, and continuous optimization.
-        </p>
-      </div>
-
-      <div className="relative grid gap-6 lg:grid-cols-2">
-        <div className="hidden lg:block absolute left-6 top-16 h-[calc(100%-4rem)] w-px bg-gradient-to-b from-indigo-500/60 via-slate-500/30 to-transparent" />
-
-        {processStages.map((stage, index) => (
-          <motion.article
-            key={stage.number}
-            data-step-index={index}
-            initial={{ opacity: 0, y: 40, scale: 0.98 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, amount: 0.35 }}
-            transition={{ duration: 0.75, ease: "easeOut", delay: index * 0.08 }}
-            className={`group relative flex h-full flex-col justify-between overflow-hidden rounded-[2rem] border border-slate-700/50 bg-slate-950/80 p-8 shadow-2xl shadow-slate-950/40 backdrop-blur-xl transition-all duration-500 ${
-              activeStep === index ? "border-indigo-400/40 bg-slate-900/90 shadow-[0_30px_80px_-40px_rgba(99,102,241,0.75)]" : "hover:border-indigo-400/20 hover:shadow-[0_20px_60px_-30px_rgba(15,23,42,0.5)]"
-            }`}
-          >
-            <div className="absolute right-0 top-0 h-full w-1 bg-gradient-to-b from-transparent via-indigo-300/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-            <div className="absolute left-0 top-0 h-full w-full rounded-[2rem] bg-gradient-to-br from-indigo-500/5 via-transparent to-purple-500/5 opacity-40 blur-2xl" />
-            <div className="relative z-10">
-              <div className="flex items-center gap-4">
-                <div className={`flex h-14 w-14 items-center justify-center rounded-3xl border border-white/10 bg-slate-900/60 text-white shadow-lg shadow-slate-950/30 transition-transform duration-500 group-hover:-translate-y-1 ${stage.iconGradient} bg-gradient-to-br from-slate-900/40 via-white/10 to-transparent`}> 
-                  <motion.div
-                    animate={{ y: [0, -3, 0] }}
-                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                    className="inline-flex rounded-3xl bg-white/10 p-2 shadow-inner shadow-indigo-500/20"
-                  >
-                    <stage.icon className="h-7 w-7 text-white" />
-                  </motion.div>
-                </div>
-                <div>
-                  <span className="text-xs font-semibold uppercase tracking-[0.32em] text-indigo-300/80">Step {stage.number}</span>
-                  <h3 className="mt-3 text-2xl font-semibold text-white">{stage.title}</h3>
-                </div>
-              </div>
-
-              <p className="mt-6 text-sm leading-7 text-slate-300">{stage.description}</p>
-            </div>
-
-            <div className="mt-8 flex items-center justify-between text-sm text-slate-400">
-              <span className="font-semibold text-indigo-300/90">Progress</span>
-              <span>{index + 1}/6</span>
-            </div>
-          </motion.article>
-        ))}
-      </div>
-    </ServiceSection>
+    <ProcessStepsGrid
+      id="process"
+      theme="dark"
+      label="Product Development Process"
+      title="Product Development Process"
+      description="Our streamlined development workflow transforms ideas into scalable digital products through strategy, design, engineering, testing, and continuous optimization."
+      steps={homeProcessSteps}
+      titleId="process-heading"
+    />
   );
 }
 
@@ -662,7 +533,7 @@ function ContactSection() {
 
     const script = document.createElement("script");
     script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
-    // console.log("RECAPTCHA KEY:", RECAPTCHA_SITE_KEY);
+    console.log("RECAPTCHA KEY:", RECAPTCHA_SITE_KEY);
 
     script.async = true;
     script.defer = true;
@@ -1043,12 +914,13 @@ function ContactSection() {
               >
                 <option value="">Select a service...</option>
                 <option value="Web Applications">Web Applications</option>
-                <option value="Ai Integration">Ai Integration</option>
+                <option value="AI Integration">AI Integration</option>
                 <option value="Digital Marketing">Digital Marketing</option>
-                <option value="SEO">SEO</option>
+                <option value="IT Consultancy">IT Consultancy</option>
                 <option value="Websites">Websites</option>
                 <option value="Mobile Apps">Mobile Apps</option>
                 <option value="Strategy & Support">Strategy & Support</option>
+                <option value="Other">Other</option>
               </select>
               {errors.service && (
                 <p className="mt-2 text-sm text-rose-300">{errors.service}</p>

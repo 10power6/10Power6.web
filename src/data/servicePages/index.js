@@ -3,7 +3,7 @@ import aiIntegration from "./aiIntegration";
 import digitalMarketing from "./digitalMarketing";
 import mobileApplications from "./mobileApplications";
 import websites from "./websites";
-import seo from "./seo";
+import itConsultancy from "./itConsultancy";
 import strategySupport from "./strategySupport";
 
 export const servicePages = {
@@ -12,7 +12,7 @@ export const servicePages = {
   [digitalMarketing.slug]: digitalMarketing,
   [mobileApplications.slug]: mobileApplications,
   [websites.slug]: websites,
-  [seo.slug]: seo,
+  [itConsultancy.slug]: itConsultancy,
   [strategySupport.slug]: strategySupport,
 };
 

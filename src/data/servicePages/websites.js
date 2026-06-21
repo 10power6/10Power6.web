@@ -1,6 +1,8 @@
 import heroImg from "../../assets/services/websites/hero.webp";
 import overviewImg from "../../assets/services/websites/overview.webp";
 import featureImg from "../../assets/services/websites/feature.webp";
+import showcaseOneImg from "../../assets/services/websites/showcase-one.webp";
+import showcaseTwoImg from "../../assets/services/websites/showcase-two.webp";
 
 export default {
   slug: "websites",
@@ -15,6 +17,10 @@ export default {
     overviewAlt: "Web developer coding a responsive website layout",
     feature: featureImg,
     featureAlt: "Website design mockup on desktop monitor",
+    showcaseOne: showcaseOneImg,
+    showcaseOneAlt: "Creative web design workspace with wireframes and laptop",
+    showcaseTwo: showcaseTwoImg,
+    showcaseTwoAlt: "UI designer working on website layout and color palette",
   },
   hero: {
     headline: "Websites That Communicate Trust, Authority, and Drive Conversions",
@@ -68,8 +74,40 @@ export default {
       "Launch support and training documentation",
     ],
   },
-  technologies: ["React", "WordPress", "Tailwind CSS", "JavaScript", "TypeScript", "PHP", "MySQL", "Vite", "AWS", "Cloudflare", "GitHub", "Figma"],
-  industries: ["Professional Services", "Healthcare", "Real Estate", "E-Commerce", "Education", "Hospitality", "Finance & Fintech", "Creative Agencies"],
+  technologies: [
+    "React",
+    "Next.js",
+    "WordPress",
+    "Webflow",
+    "Tailwind CSS",
+    "TypeScript",
+    "JavaScript",
+    "PHP",
+    "MySQL",
+    "Sanity",
+    "Vite",
+    "AWS",
+    "Netlify",
+    "Cloudflare",
+    "HTML5",
+    "CSS3",
+    "Figma",
+    "GitHub",
+  ],
+  industries: [
+    "Professional Services",
+    "Healthcare",
+    "Real Estate",
+    "E-Commerce",
+    "Education",
+    "Hospitality",
+    "Finance & Fintech",
+    "Creative Agencies",
+    "Food & Beverage",
+    "Non-Profit & Government",
+    "Startups",
+    "Travel & Tourism",
+  ],
   process: {
     title: "Our Website Design Process",
     subtitle: "A collaborative process that ensures your website reflects your brand and achieves your business goals.",

@@ -1,6 +1,8 @@
 import heroImg from "../../assets/services/web-applications/hero.webp";
 import overviewImg from "../../assets/services/web-applications/overview.webp";
 import featureImg from "../../assets/services/web-applications/feature.webp";
+import showcaseOneImg from "../../assets/services/web-applications/showcase-one.webp";
+import showcaseTwoImg from "../../assets/services/web-applications/showcase-two.webp";
 
 const defaultProcess = {
   title: "Our Web Application Development Process",
@@ -26,6 +28,10 @@ export default {
     overviewAlt: "Software development team reviewing web application architecture",
     feature: featureImg,
     featureAlt: "Developer writing code for a scalable web application",
+    showcaseOne: showcaseOneImg,
+    showcaseOneAlt: "Developers collaborating on a web application project",
+    showcaseTwo: showcaseTwoImg,
+    showcaseTwoAlt: "Modern development workspace with multiple monitors",
   },
   hero: {
     headline: "Enterprise-Grade Web Applications Built for Scale, Speed, and Growth",
@@ -79,8 +85,40 @@ export default {
       "30-day post-launch support and bug fixes",
     ],
   },
-  technologies: ["React", "Laravel", "Node.js", "TypeScript", "PostgreSQL", "MySQL", "Redis", "AWS", "Docker", "REST APIs", "Tailwind CSS", "GitHub"],
-  industries: ["SaaS & Technology", "Healthcare", "Finance & Fintech", "E-Commerce", "Education", "Logistics & Supply Chain", "Real Estate", "Professional Services"],
+  technologies: [
+    "React",
+    "Next.js",
+    "Laravel",
+    "Node.js",
+    "TypeScript",
+    "PostgreSQL",
+    "MySQL",
+    "MongoDB",
+    "Redis",
+    "AWS",
+    "Docker",
+    "Kubernetes",
+    "GraphQL",
+    "Tailwind CSS",
+    "Vercel",
+    "Prisma",
+    "Nginx",
+    "GitHub",
+  ],
+  industries: [
+    "SaaS & Technology",
+    "Healthcare",
+    "Finance & Fintech",
+    "E-Commerce",
+    "Education",
+    "Logistics & Supply Chain",
+    "Real Estate",
+    "Professional Services",
+    "Manufacturing",
+    "Hospitality",
+    "Legal & Compliance",
+    "Media & Entertainment",
+  ],
   process: defaultProcess,
   stats: [
     { label: "50+", value: "Web platforms delivered" },

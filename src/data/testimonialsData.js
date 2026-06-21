@@ -50,7 +50,7 @@ export const testimonials = [
 ];
 
 export const CARD_WIDTHS = {
-  sm: "w-[min(88vw,300px)] sm:w-[320px]",
-  md: "w-[min(88vw,340px)] sm:w-[360px]",
-  lg: "w-[min(88vw,360px)] sm:w-[400px]",
+  sm: "w-[min(92vw,340px)] sm:w-[380px] lg:w-[420px]",
+  md: "w-[min(92vw,360px)] sm:w-[400px] lg:w-[440px]",
+  lg: "w-[min(92vw,380px)] sm:w-[420px] lg:w-[480px]",
 };
