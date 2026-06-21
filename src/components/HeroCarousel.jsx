@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import { heroSlides } from "../data/heroSlides";
 import useFixedBackground from "../hooks/useFixedBackground";
 
@@ -8,36 +9,43 @@ const AUTO_INTERVAL_MS = 5500;
 
 const textContainer = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.14, delayChildren: 0.2 } },
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.18 } },
 };
 
 const textItem = {
-  hidden: { opacity: 0, y: 28 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] } },
+  hidden: { opacity: 0, y: 32 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
 };
 
 const buttonItem = {
-  hidden: { opacity: 0, y: 18 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] } },
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
 };
 
 function HeroCta({ cta, variant = "primary" }) {
   const className =
     variant === "primary"
-      ? "inline-flex rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-200"
-      : "inline-flex rounded-full border border-white/25 bg-white/10 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition hover:border-white/40 hover:bg-white/15";
+      ? "group inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white to-slate-100 px-7 py-3.5 text-sm font-semibold text-slate-950 shadow-[0_4px_28px_rgba(255,255,255,0.18)] ring-1 ring-white/80 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_40px_rgba(255,255,255,0.28)] hover:brightness-105"
+      : "group inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/[0.06] px-7 py-3.5 text-sm font-semibold text-white shadow-[0_4px_24px_rgba(15,23,42,0.2)] backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-indigo-300/40 hover:bg-white/10 hover:shadow-[0_8px_32px_rgba(99,102,241,0.18)]";
+
+  const content = (
+    <>
+      {cta.label}
+      <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
+    </>
+  );
 
   if (cta.isRoute) {
     return (
       <Link to={cta.href} className={className}>
-        {cta.label}
+        {content}
       </Link>
     );
   }
 
   return (
     <a href={cta.href} className={className}>
-      {cta.label}
+      {content}
     </a>
   );
 }
@@ -50,18 +58,35 @@ function HeroSlideContent({ slide }) {
       initial="hidden"
       animate="show"
       exit="hidden"
-      className="max-w-xl space-y-5"
+      className="relative max-w-2xl lg:max-w-3xl"
     >
-      <motion.p variants={textItem} className="text-sm font-semibold uppercase tracking-[0.28em] text-indigo-300">
-        {slide.tag}
-      </motion.p>
-      <motion.h1 variants={textItem} className="text-4xl font-extrabold leading-tight text-white md:text-5xl">
+      <div
+        className="pointer-events-none absolute -left-5 top-1 hidden h-[calc(100%-0.5rem)] w-px bg-gradient-to-b from-indigo-400/70 via-purple-400/35 to-transparent md:block"
+        aria-hidden="true"
+      />
+
+      <motion.div variants={textItem}>
+        <span className="section-eyebrow inline-flex items-center gap-2 rounded-full border border-indigo-400/25 bg-indigo-500/10 px-4 py-1.5 text-[0.68rem] font-bold uppercase text-indigo-200 shadow-[0_0_24px_rgba(99,102,241,0.12)] backdrop-blur-sm">
+          <span className="h-1.5 w-1.5 rounded-full bg-indigo-300 shadow-[0_0_8px_rgba(165,180,252,0.8)]" aria-hidden="true" />
+          {slide.tag}
+        </span>
+      </motion.div>
+
+      <motion.h1
+        variants={textItem}
+        className="hero-headline mt-6 text-[2.65rem] font-bold text-white drop-shadow-[0_2px_32px_rgba(99,102,241,0.12)] sm:text-5xl md:text-6xl lg:text-[4rem]"
+      >
         {slide.title}
       </motion.h1>
-      <motion.p variants={textItem} className="text-base text-slate-300 md:text-lg">
+
+      <motion.p
+        variants={textItem}
+        className="mt-6 max-w-xl text-base font-medium leading-8 text-slate-300/95 md:text-lg md:leading-8"
+      >
         {slide.body}
       </motion.p>
-      <motion.div variants={buttonItem} className="flex flex-wrap items-center gap-3 pt-1">
+
+      <motion.div variants={buttonItem} className="mt-8 flex flex-wrap items-center gap-4">
         <HeroCta cta={slide.primaryCta} variant="primary" />
         {slide.secondaryCta && <HeroCta cta={slide.secondaryCta} variant="secondary" />}
       </motion.div>
@@ -109,31 +134,24 @@ export default function HeroCarousel() {
                       initial={{ scale: 1 }}
                       animate={{ scale: 1.1 }}
                       transition={{ duration: AUTO_INTERVAL_MS / 1000 + 2, ease: "linear" }}
-                      className="h-full w-full object-cover opacity-55"
+                      className="h-full w-full object-cover opacity-50"
                     />
                   </motion.div>
 
-                  <div className="absolute inset-0 bg-[#050B1A]/50 backdrop-blur-[1px]" />
-
-                  {/* Left-heavy navy wash — strong contrast behind headline */}
+                  <div className="absolute inset-0 bg-[#050B1A]/55 backdrop-blur-[1px]" />
                   <div className="hero-overlay-navy absolute inset-0" aria-hidden="true" />
-
-                  {/* Gentle luminance lift on the right 30–40% — reveals image detail */}
                   <div className="hero-overlay-lift absolute inset-0" aria-hidden="true" />
-
-                  {/* Subtle indigo cinematic glow — far right depth */}
                   <div
-                    className="pointer-events-none absolute inset-0 bg-gradient-to-l from-indigo-400/[0.07] via-transparent to-transparent"
+                    className="pointer-events-none absolute inset-0 bg-gradient-to-l from-indigo-400/[0.08] via-transparent to-transparent"
                     aria-hidden="true"
                   />
-
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-slate-950/40" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-transparent to-slate-950/45" />
                 </motion.article>
               ) : null
             )}
           </AnimatePresence>
 
-          <div className="absolute inset-0 flex items-center px-8 md:px-14">
+          <div className="absolute inset-0 flex items-center px-6 sm:px-10 md:px-14 lg:px-20">
             <AnimatePresence mode="wait">
               <HeroSlideContent key={activeSlide.id} slide={activeSlide} />
             </AnimatePresence>
@@ -141,7 +159,7 @@ export default function HeroCarousel() {
         </div>
 
         <div
-          className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 items-center justify-center gap-3"
+          className="absolute bottom-10 left-1/2 z-10 flex -translate-x-1/2 items-center justify-center gap-2.5 rounded-full border border-white/10 bg-slate-950/40 px-4 py-2.5 backdrop-blur-md"
           aria-label="Hero slide navigation"
         >
           {heroSlides.map((slide, index) => (
@@ -149,8 +167,10 @@ export default function HeroCarousel() {
               key={slide.id}
               type="button"
               onClick={() => setActiveIndex(index)}
-              className={`h-2.5 w-8 rounded-full transition ${
-                index === activeIndex ? "bg-indigo-400" : "bg-slate-600 hover:bg-slate-500"
+              className={`rounded-full transition-all duration-300 ${
+                index === activeIndex
+                  ? "h-2 w-9 bg-gradient-to-r from-indigo-400 to-purple-400 shadow-[0_0_16px_rgba(129,140,248,0.5)]"
+                  : "h-2 w-2 bg-slate-600 hover:bg-slate-400"
               }`}
               aria-label={`Go to slide ${index + 1}: ${slide.tag}`}
               aria-current={index === activeIndex ? "true" : undefined}

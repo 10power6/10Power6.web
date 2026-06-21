@@ -106,16 +106,16 @@ export default function IntegrationsSection() {
           viewport={{ once: true, amount: 0.3 }}
           className="mx-auto mb-14 max-w-4xl text-center"
         >
-          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-indigo-300">
+          <p className="section-eyebrow text-xs font-bold uppercase text-indigo-300">
             Tools & Technologies
           </p>
-          <h2 id="integrations-heading" className="mt-4 text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:text-5xl">
+          <h2 id="integrations-heading" className="section-headline mt-5 text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
             Built with modern tech &{" "}
             <span className="bg-gradient-to-r from-indigo-300 via-purple-300 to-indigo-200 bg-clip-text text-transparent">
               seamless integrations
             </span>
           </h2>
-          <p className="mx-auto mt-5 max-w-3xl text-base leading-8 text-slate-300 sm:text-lg">
+          <p className="mx-auto mt-5 max-w-3xl text-base font-medium leading-8 text-slate-300 sm:text-lg sm:leading-8">
             We work with proven frameworks, cloud platforms, databases, CRMs, and automation tools to build reliable,
             scalable, and future-ready digital products.
           </p>

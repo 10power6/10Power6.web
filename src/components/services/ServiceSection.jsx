@@ -29,13 +29,13 @@ export function ServiceSectionHeading({
   return (
     <header className={`${alignClass} ${className}`}>
       {label && (
-        <p className={`text-sm font-semibold uppercase tracking-[0.28em] ${t.label}`}>{label}</p>
+        <p className={`section-eyebrow text-xs font-bold uppercase ${t.label}`}>{label}</p>
       )}
-      <h2 id={titleId} className={`mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl ${t.heading}`}>
+      <h2 id={titleId} className={`section-headline mt-5 text-3xl font-bold sm:text-4xl lg:text-5xl ${t.heading}`}>
         {title}
       </h2>
       {description && (
-        <p className={`mt-5 text-base leading-8 sm:text-lg ${t.subheading}`}>{description}</p>
+        <p className={`mt-5 text-base font-medium leading-8 sm:text-lg sm:leading-8 ${t.subheading}`}>{description}</p>
       )}
     </header>
   );

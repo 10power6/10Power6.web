@@ -1,10 +1,12 @@
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import emailjs from "@emailjs/browser";
 import { motion } from "framer-motion";
 import { BrowserRouter as Router, Link, Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import ProcessStepsGrid from "./components/ProcessStepsGrid";
 import { homeProcessSteps } from "./data/processVisuals";
-import { Code2, TrendingUp, Smartphone, MonitorSmartphone, Briefcase, LifeBuoy, Bot, Phone, Menu, X, ChevronDown } from "lucide-react";
+import MobileMenu from "./components/MobileMenu";
+import Footer from "./components/Footer";
+import { Code2, TrendingUp, Smartphone, MonitorSmartphone, Briefcase, LifeBuoy, Bot, Phone } from "lucide-react";
 import logoFileUrl from "./assets/10Power6Logo.png";
 import ServicePage from "./pages/ServicePage";
 import AboutPage from "./pages/AboutPage";
@@ -12,7 +14,7 @@ import LeadCaptureModal from "./components/LeadCaptureModal";
 import TestimonialsSection from "./components/TestimonialsSection";
 import IntegrationsSection from "./components/IntegrationsSection";
 import HeroCarousel from "./components/HeroCarousel";
-import { useActiveSection, getNavLinkClass, getMobileNavClass } from "./hooks/useActiveSection";
+import { useActiveSection, getNavLinkClass } from "./hooks/useActiveSection";
 import ServiceSection from "./components/services/ServiceSection";
 import { getThemeClasses } from "./components/services/theme";
 
@@ -216,168 +218,6 @@ function BrandLogo() {
   );
 }
 
-function MobileMenu() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
-  const navigate = useSmartNavigation();
-  const router = useNavigate();
-  const activeSection = useActiveSection();
-  const location = useLocation();
-  const isAboutPage = location.pathname === "/about";
-
-  useEffect(() => {
-    document.body.style.overflow = isOpen ? "hidden" : "";
-    document.documentElement.style.overflow = isOpen ? "hidden" : "";
-    document.body.style.position = isOpen ? "fixed" : "";
-    return () => {
-      document.body.style.overflow = "";
-      document.documentElement.style.overflow = "";
-      document.body.style.position = "";
-    };
-  }, [isOpen]);
-
-  const closeMenu = () => {
-    setIsOpen(false);
-    setServicesOpen(false);
-  };
-
-  const handleNavClick = (sectionId) => {
-    navigate(sectionId);
-    closeMenu();
-  };
-
-  const handleServiceClick = (slug) => {
-    router(`/services/${slug}`);
-    closeMenu();
-  };
-
-  return (
-    <>
-      <button
-        type="button"
-        onClick={() => setIsOpen((current) => !current)}
-        aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
-        aria-expanded={isOpen}
-        className="inline-flex items-center justify-center rounded-lg p-2 text-white hover:bg-white/5 md:hidden"
-      >
-        {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-      </button>
-
-      {isOpen && (
-        <>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.18 }}
-            className="fixed inset-0 z-40"
-            style={{ background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
-            aria-hidden="true"
-            onClick={closeMenu}
-          />
-
-          <motion.aside
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -20, opacity: 0 }}
-            transition={{ duration: 0.28, ease: "easeOut" }}
-            className="fixed inset-0 z-50 h-screen w-screen flex flex-col overflow-y-auto bg-slate-900 p-6 md:hidden"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Mobile navigation"
-          >
-            <div className="flex items-center justify-between">
-              <BrandLogo />
-              <button
-                type="button"
-                onClick={closeMenu}
-                aria-label="Close navigation menu"
-                className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-white/10 text-white shadow-2xl ring-1 ring-white/12 transition hover:bg-white/16"
-              >
-                <X className="h-5 w-5 text-white" />
-              </button>
-            </div>
-
-            <nav className="mt-12 flex flex-col gap-6 text-2xl font-extrabold text-white">
-              <button
-                type="button"
-                onClick={() => {
-                  router("/");
-                  closeMenu();
-                  setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 50);
-                }}
-                className={getMobileNavClass(activeSection === "home")}
-              >
-                Home
-              </button>
-              <button
-                type="button"
-                onClick={() => setServicesOpen((current) => !current)}
-                className={`flex items-center justify-between ${getMobileNavClass(activeSection === "services")}`}
-              >
-                <span className="text-white">Services</span>
-                <span className={`${servicesOpen ? "rotate-180" : "rotate-0"} transition-transform duration-200`}>
-                  <ChevronDown className="h-5 w-5 text-white" />
-                </span>
-              </button>
-
-              {servicesOpen && (
-                <div className="space-y-3 rounded-3xl border border-white/12 bg-slate-900 p-4">
-                  {services.map((service) => (
-                    <button
-                      key={service.slug}
-                      type="button"
-                      onClick={() => handleServiceClick(service.slug)}
-                      className="w-full rounded-2xl px-4 py-3 text-left text-sm text-slate-100 transition hover:bg-slate-700/80 hover:text-white"
-                    >
-                      {service.name}
-                    </button>
-                  ))}
-                </div>
-              )}
-
-              <button
-                type="button"
-                onClick={() => handleNavClick("process")}
-                className={getMobileNavClass(activeSection === "process")}
-              >
-                Process
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  router("/about");
-                  closeMenu();
-                }}
-                className={getMobileNavClass(isAboutPage || activeSection === "about")}
-              >
-                About
-              </button>
-              <button
-                type="button"
-                onClick={() => handleNavClick("contact")}
-                className={getMobileNavClass(activeSection === "contact")}
-              >
-                Contact
-              </button>
-            </nav>
-
-            <div className="mt-auto pt-6">
-              <button
-                type="button"
-                onClick={() => handleNavClick("contact")}
-                className="w-full rounded-full bg-indigo-500 px-5 py-4 text-sm font-semibold text-white transition hover:bg-indigo-400 hover:shadow-2xl"
-              >
-                Start a Project
-              </button>
-            </div>
-          </motion.aside>
-        </>
-      )}
-    </>
-  );
-}
-
 function ServicesSection() {
   const theme = "light";
   const t = getThemeClasses(theme);
@@ -402,13 +242,13 @@ function ServicesSection() {
       </div>
 
       <div className="mx-auto mb-14 max-w-3xl text-center">
-        <span className={`inline-flex rounded-full border px-4 py-1 text-xs font-semibold uppercase tracking-[0.28em] backdrop-blur-sm ${t.badge}`}>
+        <span className={`section-eyebrow inline-flex rounded-full border px-4 py-1.5 text-xs font-bold uppercase backdrop-blur-sm ${t.badge}`}>
           Selected Services
         </span>
-        <h2 id="services-heading" className={`mt-6 text-4xl font-extrabold tracking-tight sm:text-5xl ${t.heading}`}>
+        <h2 id="services-heading" className={`section-headline mt-6 text-4xl font-bold sm:text-5xl ${t.heading}`}>
           Digital Solutions Built for Modern Growth
         </h2>
-        <p className={`mx-auto mt-5 max-w-2xl text-base leading-8 sm:text-lg ${t.subheading}`}>
+        <p className={`mx-auto mt-5 max-w-2xl text-base font-medium leading-8 sm:text-lg sm:leading-8 ${t.subheading}`}>
           We engineer scalable digital experiences, AI-powered systems, and growth-focused solutions designed to help ambitious businesses lead in the modern digital era.
         </p>
       </div>
@@ -735,14 +575,14 @@ function ContactSection() {
 
       {/* Header */}
       <div className="mb-16 max-w-3xl">
-        <p className={`text-sm font-semibold uppercase tracking-[0.22em] ${t.label}`}>
-          Let's Connect
+        <p className={`section-eyebrow text-xs font-bold uppercase ${t.label}`}>
+          Let&apos;s Connect
         </p>
-        <h2 id="contact-heading" className={`mt-3 text-4xl font-extrabold leading-tight md:text-5xl ${t.heading}`}>
+        <h2 id="contact-heading" className={`section-headline mt-4 text-4xl font-bold md:text-5xl ${t.heading}`}>
           Let&apos;s Build Something Amazing Together
         </h2>
-        <p className={`mt-4 text-lg ${t.body}`}>
-          Share your project vision with us. We'll review your details and get back to you within 24 hours with a tailored proposal.
+        <p className={`mt-5 text-base font-medium leading-8 sm:text-lg ${t.body}`}>
+          Share your project vision with us. We&apos;ll review your details and get back to you within 24 hours with a tailored proposal.
         </p>
       </div>
 
@@ -1002,8 +842,6 @@ function ScrollToTop() {
 }
 
 function App() {
-  const year = useMemo(() => new Date().getFullYear(), []);
-
   return (
     <div className="bg-slate-950 text-slate-100 antialiased overflow-x-hidden">
       <Router>
@@ -1057,6 +895,8 @@ function App() {
         <Route path="/services/:slug" element={<ServicePage />} />
         <Route path="/about" element={<AboutPage />} />
       </Routes>
+
+      <Footer />
       </Router>
 
       <motion.a
@@ -1074,10 +914,6 @@ function App() {
         </span>
         <Phone className="h-6 w-6 sm:h-7 sm:w-7" />
       </motion.a>
-
-      <footer className="border-t border-slate-800 py-6 text-center text-sm text-slate-400">
-        <p>&copy; {year} 10Power6. All rights reserved.</p>
-      </footer>
     </div>
   );
 }
