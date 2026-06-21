@@ -443,6 +443,9 @@ div[data-g-recaptcha-badge] {
 .mobile-menu-panel {
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .mobile-menu-noise {

@@ -1,27 +1,28 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import logoFileUrl from "../assets/10Power6Logo.png";
 import { services } from "../serviceData";
 import { useActiveSection } from "../hooks/useActiveSection";
 
-const panelSpring = { type: "spring", stiffness: 320, damping: 34, mass: 0.85 };
+const PANEL_EASE = [0.32, 0.72, 0, 1];
+const PANEL_DURATION = 0.44;
 
 const navContainerVariants = {
   hidden: {},
   show: {
-    transition: { staggerChildren: 0.06, delayChildren: 0.14 },
+    transition: { staggerChildren: 0.05, delayChildren: 0.22 },
   },
 };
 
 const navItemVariants = {
-  hidden: { opacity: 0, x: 28 },
+  hidden: { opacity: 0, y: 14 },
   show: {
     opacity: 1,
-    x: 0,
-    transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] },
+    y: 0,
+    transition: { duration: 0.38, ease: [0.16, 1, 0.3, 1] },
   },
 };
 
@@ -33,11 +34,11 @@ const submenuContainerVariants = {
 };
 
 const submenuItemVariants = {
-  hidden: { opacity: 0, x: 10 },
+  hidden: { opacity: 0, y: 8 },
   show: {
     opacity: 1,
-    x: 0,
-    transition: { duration: 0.32, ease: [0.16, 1, 0.3, 1] },
+    y: 0,
+    transition: { duration: 0.28, ease: [0.16, 1, 0.3, 1] },
   },
 };
 
@@ -97,24 +98,36 @@ function MobileMenuLogo({ onClick }) {
 
 export default function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const scrollYRef = useRef(0);
   const navigateToSection = useSmartNavigation();
   const router = useNavigate();
   const activeSection = useActiveSection();
   const location = useLocation();
+  const prefersReducedMotion = useReducedMotion();
   const isAboutPage = location.pathname === "/about";
   const isServicePage = location.pathname.startsWith("/services/");
   const isServicesActive = activeSection === "services" || isServicePage;
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const closeMenu = useCallback(() => {
     setIsOpen(false);
     setServicesOpen(false);
   }, []);
 
-  useEffect(() => {
+  const openMenu = useCallback(() => {
+    scrollYRef.current = window.scrollY;
+    setIsOpen(true);
+  }, []);
+
+  useLayoutEffect(() => {
     if (!isOpen) return undefined;
 
-    const scrollY = window.scrollY;
+    const scrollY = scrollYRef.current;
     document.body.style.position = "fixed";
     document.body.style.top = `-${scrollY}px`;
     document.body.style.left = "0";
@@ -163,34 +176,42 @@ export default function MobileMenu() {
     closeMenu();
   };
 
+  const panelTransition = prefersReducedMotion
+    ? { duration: 0.15, ease: "linear" }
+    : { duration: PANEL_DURATION, ease: PANEL_EASE };
+
+  const panelMotion = prefersReducedMotion
+    ? { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 } }
+    : { initial: { x: "100%" }, animate: { x: 0 }, exit: { x: "100%" } };
+
   const menu = (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {isOpen && (
-        <motion.div
-          key="mobile-menu"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.22 }}
-          className="fixed inset-0 z-[9999] md:hidden"
-          role="presentation"
+        <motion.aside
+          key="mobile-menu-panel"
+          {...panelMotion}
+          transition={panelTransition}
+          className="mobile-menu-panel fixed inset-0 z-[9999] flex w-full flex-col overflow-hidden md:hidden"
+          style={{
+            height: "100dvh",
+            maxHeight: "100dvh",
+            paddingTop: "env(safe-area-inset-top, 0px)",
+            paddingBottom: "env(safe-area-inset-bottom, 0px)",
+            paddingLeft: "env(safe-area-inset-left, 0px)",
+            paddingRight: "env(safe-area-inset-right, 0px)",
+          }}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mobile navigation"
         >
-          <motion.aside
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={panelSpring}
-            className="mobile-menu-panel absolute inset-0 flex h-[100dvh] max-h-[100dvh] w-full flex-col overflow-hidden"
-            style={{
-              paddingTop: "env(safe-area-inset-top, 0px)",
-              paddingBottom: "env(safe-area-inset-bottom, 0px)",
-              paddingLeft: "env(safe-area-inset-left, 0px)",
-              paddingRight: "env(safe-area-inset-right, 0px)",
-            }}
-            role="dialog"
-            aria-modal="true"
-            aria-label="Mobile navigation"
-          >
+          <button
+            type="button"
+            className="absolute inset-0 z-0 bg-slate-950/70 backdrop-blur-[2px]"
+            aria-label="Close navigation menu"
+            onClick={closeMenu}
+          />
+
+          <div className="relative z-10 flex min-h-0 flex-1 flex-col overflow-hidden">
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#040711] via-[#0a1020] to-[#050810]" aria-hidden="true" />
             <div
               className="pointer-events-none absolute -left-24 top-1/4 h-72 w-72 rounded-full bg-indigo-600/20 blur-[100px]"
@@ -216,8 +237,8 @@ export default function MobileMenu() {
                 type="button"
                 onClick={closeMenu}
                 aria-label="Close navigation menu"
-                whileHover={{ scale: 1.06, rotate: 90 }}
-                whileTap={{ scale: 0.94 }}
+                whileHover={prefersReducedMotion ? undefined : { scale: 1.06, rotate: 90 }}
+                whileTap={prefersReducedMotion ? undefined : { scale: 0.94 }}
                 transition={{ type: "spring", stiffness: 400, damping: 22 }}
                 className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-indigo-400/35 bg-white/[0.06] text-white shadow-[0_0_24px_rgba(99,102,241,0.2)] backdrop-blur-md transition-colors hover:border-indigo-300/50 hover:bg-indigo-500/15 hover:shadow-[0_0_32px_rgba(99,102,241,0.35)]"
               >
@@ -229,7 +250,7 @@ export default function MobileMenu() {
               variants={navContainerVariants}
               initial="hidden"
               animate="show"
-              className="relative z-10 flex flex-1 flex-col justify-center gap-3 overflow-y-auto overscroll-contain px-6 py-6"
+              className="relative z-10 flex min-h-0 flex-1 flex-col justify-center gap-3 overflow-y-auto overscroll-contain px-6 py-6"
               aria-label="Primary"
             >
               <motion.div variants={navItemVariants}>
@@ -336,8 +357,8 @@ export default function MobileMenu() {
                 Building software that scales businesses.
               </p>
             </div>
-          </motion.aside>
-        </motion.div>
+          </div>
+        </motion.aside>
       )}
     </AnimatePresence>
   );
@@ -346,15 +367,15 @@ export default function MobileMenu() {
     <>
       <button
         type="button"
-        onClick={() => setIsOpen(true)}
+        onClick={openMenu}
         aria-label="Open navigation menu"
         aria-expanded={isOpen}
-        className="inline-flex items-center justify-center rounded-xl p-2.5 text-white transition hover:bg-white/5 md:hidden"
+        className="relative z-50 inline-flex items-center justify-center rounded-xl p-2.5 text-white transition hover:bg-white/5 md:hidden"
       >
         <Menu className="h-5 w-5" aria-hidden="true" />
       </button>
 
-      {typeof document !== "undefined" ? createPortal(menu, document.body) : null}
+      {mounted && typeof document !== "undefined" ? createPortal(menu, document.body) : null}
     </>
   );
 }
