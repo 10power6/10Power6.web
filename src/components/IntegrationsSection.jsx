@@ -108,11 +108,7 @@ export default function IntegrationsSection() {
           />
 
           <IntegrationMarqueeRow items={integrationRowOne} direction="left" className="relative z-10" />
-          <IntegrationMarqueeRow
-            items={integrationRowTwo}
-            direction="right"
-            className="relative z-10 hidden md:block"
-          />
+          <IntegrationMarqueeRow items={integrationRowTwo} direction="right" className="relative z-10" />
         </motion.div>
 
         <motion.div
