@@ -5,6 +5,11 @@ import { BrowserRouter as Router, Link, Route, Routes, useNavigate, useLocation 
 import { Brain, PenTool, Code2, CheckCircle2, Rocket, ShieldCheck, TrendingUp, Smartphone, MonitorSmartphone, BarChart3, LifeBuoy, Bot, Phone, Menu, X, ChevronDown } from "lucide-react";
 import logoFileUrl from "./assets/10Power6Logo.png";
 import ServicePage from "./pages/ServicePage";
+import AboutPage from "./pages/AboutPage";
+import LeadCaptureModal from "./components/LeadCaptureModal";
+import { useActiveSection, getNavLinkClass, getMobileNavClass } from "./hooks/useActiveSection";
+import ServiceSection from "./components/services/ServiceSection";
+import { getThemeClasses } from "./components/services/theme";
 
 const slides = [
   {
@@ -152,10 +157,9 @@ function useSmartNavigation() {
   const location = useLocation();
 
   return (sectionId) => {
-    const isOnServicePage = location.pathname.startsWith("/services/");
+    const isOnHomePage = location.pathname === "/";
 
     const scrollToSection = () => {
-      // Small delay to ensure DOM is ready
       setTimeout(() => {
         const element = document.getElementById(sectionId);
         if (element) {
@@ -164,19 +168,34 @@ function useSmartNavigation() {
       }, 100);
     };
 
-    if (isOnServicePage) {
-      // Navigate to home first, then scroll
+    if (!isOnHomePage) {
       navigate("/");
       scrollToSection();
     } else {
-      // Already on home, just scroll
       scrollToSection();
     }
   };
 }
 
-// Reusable navigation link component
-function NavLink({ sectionId, label }) {
+function HomeNavLink({ isActive }) {
+  const navigate = useNavigate();
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    navigate("/");
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 50);
+  };
+
+  return (
+    <a href="/" onClick={handleClick} className={getNavLinkClass(isActive)} aria-current={isActive ? "page" : undefined}>
+      Home
+    </a>
+  );
+}
+
+function NavLink({ sectionId, label, isActive }) {
   const navigate = useSmartNavigation();
 
   const handleClick = (e) => {
@@ -188,9 +207,55 @@ function NavLink({ sectionId, label }) {
     <a
       href={`#${sectionId}`}
       onClick={handleClick}
-      className="transition hover:text-indigo-300 cursor-pointer"
+      className={getNavLinkClass(isActive)}
+      aria-current={isActive ? "true" : undefined}
     >
       {label}
+    </a>
+  );
+}
+
+function AboutNavLink({ isActive }) {
+  return (
+    <Link
+      to="/about"
+      className={getNavLinkClass(isActive)}
+      aria-current={isActive ? "page" : undefined}
+    >
+      About
+    </Link>
+  );
+}
+
+function DesktopNav() {
+  const activeSection = useActiveSection();
+  const location = useLocation();
+  const isAboutPage = location.pathname === "/about";
+
+  return (
+    <nav className="pointer-events-auto flex gap-8 text-sm font-medium">
+      <HomeNavLink isActive={activeSection === "home"} />
+      <NavLink sectionId="services" label="Services" isActive={activeSection === "services"} />
+      <NavLink sectionId="process" label="Process" isActive={activeSection === "process"} />
+      <AboutNavLink isActive={isAboutPage || activeSection === "about"} />
+      <NavLink sectionId="contact" label="Contact" isActive={activeSection === "contact"} />
+    </nav>
+  );
+}
+
+function StartProjectLink({ className, children }) {
+  const navigateToSection = useSmartNavigation();
+
+  return (
+    <a
+      href="#contact"
+      onClick={(e) => {
+        e.preventDefault();
+        navigateToSection("contact");
+      }}
+      className={className}
+    >
+      {children}
     </a>
   );
 }
@@ -232,6 +297,9 @@ function MobileMenu() {
   const [servicesOpen, setServicesOpen] = useState(false);
   const navigate = useSmartNavigation();
   const router = useNavigate();
+  const activeSection = useActiveSection();
+  const location = useLocation();
+  const isAboutPage = location.pathname === "/about";
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
@@ -309,8 +377,19 @@ function MobileMenu() {
             <nav className="mt-12 flex flex-col gap-6 text-2xl font-extrabold text-white">
               <button
                 type="button"
+                onClick={() => {
+                  router("/");
+                  closeMenu();
+                  setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 50);
+                }}
+                className={getMobileNavClass(activeSection === "home")}
+              >
+                Home
+              </button>
+              <button
+                type="button"
                 onClick={() => setServicesOpen((current) => !current)}
-                className="flex items-center justify-between rounded-3xl border border-white/12 bg-slate-900 px-6 py-5 text-left transition hover:border-white/20 hover:bg-slate-800/95"
+                className={`flex items-center justify-between ${getMobileNavClass(activeSection === "services")}`}
               >
                 <span className="text-white">Services</span>
                 <span className={`${servicesOpen ? "rotate-180" : "rotate-0"} transition-transform duration-200`}>
@@ -336,21 +415,24 @@ function MobileMenu() {
               <button
                 type="button"
                 onClick={() => handleNavClick("process")}
-                className="rounded-3xl border border-white/12 bg-slate-900 px-6 py-5 text-left text-white transition hover:border-white/20 hover:bg-slate-800/95"
+                className={getMobileNavClass(activeSection === "process")}
               >
                 Process
               </button>
               <button
                 type="button"
-                onClick={() => handleNavClick("about")}
-                className="rounded-3xl border border-white/12 bg-slate-900 px-6 py-5 text-left text-white transition hover:border-white/20 hover:bg-slate-800/95"
+                onClick={() => {
+                  router("/about");
+                  closeMenu();
+                }}
+                className={getMobileNavClass(isAboutPage || activeSection === "about")}
               >
                 About
               </button>
               <button
                 type="button"
                 onClick={() => handleNavClick("contact")}
-                className="rounded-3xl border border-white/12 bg-slate-900 px-6 py-5 text-left text-white transition hover:border-white/20 hover:bg-slate-800/95"
+                className={getMobileNavClass(activeSection === "contact")}
               >
                 Contact
               </button>
@@ -373,6 +455,9 @@ function MobileMenu() {
 }
 
 function ServicesSection() {
+  const theme = "light";
+  const t = getThemeClasses(theme);
+
   const container = {
     hidden: {},
     show: {
@@ -386,21 +471,20 @@ function ServicesSection() {
   };
 
   return (
-    <section id="services" className="relative mx-auto max-w-7xl px-6 py-28 overflow-hidden">
+    <ServiceSection theme={theme} id="services" ariaLabelledBy="services-heading" className="relative overflow-hidden">
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-6 top-10 h-72 w-72 rounded-full bg-gradient-to-br from-indigo-500/10 to-transparent blur-3xl" />
-        <div className="absolute right-6 top-1/4 h-56 w-56 rounded-full bg-gradient-to-br from-slate-300/5 to-transparent blur-3xl" />
-        <div className="absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-purple-500/10 to-transparent blur-3xl" />
+        <div className="absolute left-6 top-10 h-72 w-72 rounded-full bg-gradient-to-br from-indigo-500/5 to-transparent blur-3xl" />
+        <div className="absolute right-6 top-1/4 h-56 w-56 rounded-full bg-gradient-to-br from-purple-500/5 to-transparent blur-3xl" />
       </div>
 
-      <div className="mx-auto max-w-3xl text-center mb-14">
-        <span className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-indigo-300 backdrop-blur-sm">
+      <div className="mx-auto mb-14 max-w-3xl text-center">
+        <span className={`inline-flex rounded-full border px-4 py-1 text-xs font-semibold uppercase tracking-[0.28em] backdrop-blur-sm ${t.badge}`}>
           Selected Services
         </span>
-        <h2 className="mt-6 text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
+        <h2 id="services-heading" className={`mt-6 text-4xl font-extrabold tracking-tight sm:text-5xl ${t.heading}`}>
           Digital Solutions Built for Modern Growth
         </h2>
-        <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
+        <p className={`mx-auto mt-5 max-w-2xl text-base leading-8 sm:text-lg ${t.subheading}`}>
           We engineer scalable digital experiences, AI-powered systems, and growth-focused solutions designed to help ambitious businesses lead in the modern digital era.
         </p>
       </div>
@@ -411,40 +495,36 @@ function ServicesSection() {
             key={svc.name}
             variants={cardVariant}
             whileHover={{ y: -8, scale: 1.02 }}
-            className="group relative overflow-hidden rounded-[28px] border border-white/10 bg-slate-950/90 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.35)] backdrop-blur-xl transition-all duration-500"
+            className={`group relative overflow-hidden rounded-[28px] border p-6 backdrop-blur-xl transition-all duration-500 ${t.card} ${t.cardHover}`}
           >
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(99,102,241,0.16),_transparent_42%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-            <div className="absolute -right-16 top-8 h-28 w-28 rounded-full bg-gradient-to-br from-fuchsia-500/10 to-transparent blur-3xl" />
-            <div className="absolute -left-8 bottom-10 h-24 w-24 rounded-full bg-gradient-to-br from-cyan-500/10 to-transparent blur-3xl" />
-
             <div className="relative z-10 flex h-full flex-col gap-6">
               <div className="flex items-center gap-4">
                 <motion.div
                   whileHover={{ y: -2 }}
-                  className="flex h-16 w-16 items-center justify-center rounded-3xl bg-white/5 ring-1 ring-white/10 shadow-[0_20px_60px_rgba(99,102,241,0.1)]"
+                  className={`flex h-16 w-16 items-center justify-center rounded-3xl ring-1 ${t.iconWrap}`}
                 >
-                  <svc.Icon className="h-7 w-7 text-indigo-300" />
+                  <svc.Icon className="h-7 w-7" aria-hidden="true" />
                 </motion.div>
                 <div className="space-y-2">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-indigo-300">Service</p>
-                  <h3 id={`service-${idx}`} className="text-xl font-semibold text-white">
+                  <p className={`text-xs font-semibold uppercase tracking-[0.24em] ${t.label}`}>Service</p>
+                  <h3 id={`service-${idx}`} className={`text-xl font-semibold ${t.heading}`}>
                     {svc.name}
                   </h3>
                 </div>
               </div>
 
-              <p className="text-sm leading-7 text-slate-300">{svc.description}</p>
+              <p className={`text-sm leading-7 ${t.body}`}>{svc.description}</p>
 
               <div className="mt-auto flex items-center justify-between">
                 <Link
                   to={`/services/${svc.slug}`}
-                  className="text-xs font-semibold uppercase tracking-[0.24em] text-indigo-300 transition hover:text-white"
+                  className={`text-xs font-semibold uppercase tracking-[0.24em] transition ${t.label} hover:opacity-80`}
                 >
                   Learn more
                 </Link>
                 <Link
                   to={`/services/${svc.slug}`}
-                  className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500/15 to-violet-500/15 text-indigo-200 shadow-[0_8px_24px_rgba(99,102,241,0.12)] transition-all duration-300 hover:shadow-[0_16px_40px_rgba(99,102,241,0.24)]"
+                  className={`flex h-10 w-10 items-center justify-center rounded-2xl ring-1 transition-all duration-300 ${t.iconWrap} hover:shadow-md`}
                   aria-label={`Learn more about ${svc.name}`}
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
@@ -457,7 +537,7 @@ function ServicesSection() {
           </motion.article>
         ))}
       </motion.div>
-    </section>
+    </ServiceSection>
   );
 }
 
@@ -492,16 +572,16 @@ function ProcessSection() {
   }, []);
 
   return (
-    <section id="process" className="relative mx-auto max-w-7xl px-6 py-24 overflow-hidden">
+    <ServiceSection theme="dark" id="process" ariaLabelledBy="process-heading" className="relative overflow-hidden">
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute left-8 top-12 h-72 w-72 rounded-full bg-gradient-to-br from-indigo-500/10 to-transparent blur-3xl" />
         <div className="absolute right-8 bottom-12 h-64 w-64 rounded-full bg-gradient-to-br from-purple-500/10 to-transparent blur-3xl" />
         <div className="absolute left-1/2 top-24 h-1/2 w-[360px] -translate-x-1/2 rounded-full bg-gradient-to-r from-white/5 via-indigo-400/5 to-transparent blur-xl" />
       </div>
 
-      <div className="mx-auto max-w-3xl text-center pb-12">
+      <div className="mx-auto max-w-3xl pb-12 text-center">
         <p className="text-sm font-semibold uppercase tracking-[0.28em] text-indigo-300">Product Development Process</p>
-        <h2 className="mt-4 text-4xl font-extrabold leading-tight text-white md:text-5xl">Product Development Process</h2>
+        <h2 id="process-heading" className="mt-4 text-4xl font-extrabold leading-tight text-white md:text-5xl">Product Development Process</h2>
         <p className="mt-4 text-lg leading-8 text-slate-300">
           Our streamlined development workflow transforms ideas into scalable digital products through strategy, design, engineering, testing, and continuous optimization.
         </p>
@@ -551,7 +631,7 @@ function ProcessSection() {
           </motion.article>
         ))}
       </div>
-    </section>
+    </ServiceSection>
   );
 }
 
@@ -608,7 +688,7 @@ function ContactSection() {
 
     const script = document.createElement("script");
     script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
-    console.log("RECAPTCHA KEY:", RECAPTCHA_SITE_KEY);
+    // console.log("RECAPTCHA KEY:", RECAPTCHA_SITE_KEY);
 
     script.async = true;
     script.defer = true;
@@ -755,9 +835,9 @@ function ContactSection() {
         recaptcha_token: recaptchaToken,
       };
 
-      console.log("PUBLIC KEY:", EMAILJS_PUBLIC_KEY);
-      console.log("SERVICE ID:", EMAILJS_SERVICE_ID);
-console.log("TEMPLATE ID:", EMAILJS_TEMPLATE_ID);
+//       console.log("PUBLIC KEY:", EMAILJS_PUBLIC_KEY);
+//       console.log("SERVICE ID:", EMAILJS_SERVICE_ID);
+// console.log("TEMPLATE ID:", EMAILJS_TEMPLATE_ID);
 
       const result = await emailjs.send(
         EMAILJS_SERVICE_ID,
@@ -791,24 +871,32 @@ console.log("TEMPLATE ID:", EMAILJS_TEMPLATE_ID);
     }
   };
 
+  const theme = "light";
+  const t = getThemeClasses(theme);
+  const inputClass =
+    "w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-slate-900 placeholder-slate-400 transition-all focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20";
+  const labelClass = `block text-sm font-semibold mb-2 ${theme === "light" ? "text-slate-700" : "text-slate-200"}`;
+  const infoCardClass = "rounded-2xl border border-slate-200 bg-white p-6 shadow-sm";
+  const formCardClass = "rounded-2xl border border-slate-200 bg-white p-8 shadow-lg md:p-10";
+
   return (
-    <section id="contact" className="relative mx-auto max-w-6xl px-6 py-20">
+    <ServiceSection theme={theme} id="contact" ariaLabelledBy="contact-heading" className="relative">
+      <div className="mx-auto max-w-6xl">
       {/* Background gradient effects */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute bottom-1/3 left-0 h-96 w-96 rounded-full bg-indigo-600/5 blur-3xl" />
-        <div className="absolute top-1/3 right-0 h-96 w-96 rounded-full bg-purple-600/5 blur-3xl" />
-        <div className="absolute top-0 left-1/2 h-72 w-72 rounded-full bg-pink-500/5 blur-3xl" />
+      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div className="absolute bottom-1/3 left-0 h-96 w-96 rounded-full bg-indigo-500/5 blur-3xl" />
+        <div className="absolute top-1/3 right-0 h-96 w-96 rounded-full bg-purple-500/5 blur-3xl" />
       </div>
 
       {/* Header */}
       <div className="mb-16 max-w-3xl">
-        <p className="text-sm font-semibold uppercase tracking-[0.22em] text-indigo-300">
+        <p className={`text-sm font-semibold uppercase tracking-[0.22em] ${t.label}`}>
           Let's Connect
         </p>
-        <h2 className="mt-3 text-4xl font-extrabold leading-tight text-white md:text-5xl">
+        <h2 id="contact-heading" className={`mt-3 text-4xl font-extrabold leading-tight md:text-5xl ${t.heading}`}>
           Let&apos;s Build Something Amazing Together
         </h2>
-        <p className="mt-4 text-lg text-slate-300">
+        <p className={`mt-4 text-lg ${t.body}`}>
           Share your project vision with us. We'll review your details and get back to you within 24 hours with a tailored proposal.
         </p>
       </div>
@@ -832,18 +920,18 @@ console.log("TEMPLATE ID:", EMAILJS_TEMPLATE_ID);
           <div
             className={`transform transition-all duration-700 ${
               visibleForm ? "translate-x-0 opacity-100" : "-translate-x-12 opacity-0"
-            } rounded-2xl border border-slate-700/50 bg-gradient-to-br from-indigo-500/10 via-slate-900/60 to-purple-500/10 p-6 backdrop-blur-sm`}
+            } ${infoCardClass} bg-gradient-to-br from-indigo-50 via-white to-purple-50`}
           >
-            <p className="text-xs font-semibold uppercase tracking-widest text-indigo-300 mb-2">
+            <p className={`text-xs font-semibold uppercase tracking-widest mb-2 ${t.label}`}>
               Email
             </p>
             <a
               href="mailto:sales.10power6@gmail.com"
-              className="text-lg font-bold text-white hover:text-indigo-300 transition-colors break-all"
+              className={`text-lg font-bold transition-colors break-all ${t.heading} hover:text-indigo-600`}
             >
               sales.10power6@gmail.com
             </a>
-            <p className="mt-3 text-sm text-slate-300">
+            <p className={`mt-3 text-sm ${t.body}`}>
               We usually respond within 24 hours.
             </p>
           </div>
@@ -852,13 +940,13 @@ console.log("TEMPLATE ID:", EMAILJS_TEMPLATE_ID);
           <div
             className={`transform transition-all duration-700 delay-100 ${
               visibleForm ? "translate-x-0 opacity-100" : "-translate-x-12 opacity-0"
-            } rounded-2xl border border-slate-700/50 bg-gradient-to-br from-green-500/10 via-slate-900/60 to-emerald-500/10 p-6 backdrop-blur-sm`}
+            } ${infoCardClass} bg-gradient-to-br from-emerald-50 via-white to-green-50`}
           >
             <div className="flex items-start gap-3">
               <div className="text-2xl">✓</div>
               <div>
-                <p className="text-sm font-semibold text-white mb-1">Quick Response</p>
-                <p className="text-xs text-slate-300">
+                <p className={`text-sm font-semibold mb-1 ${t.heading}`}>Quick Response</p>
+                <p className={`text-xs ${t.body}`}>
                   Your inquiry is reviewed immediately by our team.
                 </p>
               </div>
@@ -869,9 +957,9 @@ console.log("TEMPLATE ID:", EMAILJS_TEMPLATE_ID);
           <div
             className={`transform transition-all duration-700 delay-200 ${
               visibleForm ? "translate-x-0 opacity-100" : "-translate-x-12 opacity-0"
-            } rounded-2xl border border-slate-700/50 bg-gradient-to-br from-slate-700/20 via-slate-900/60 to-slate-700/20 p-6 backdrop-blur-sm`}
+            } ${infoCardClass}`}
           >
-            <p className="text-xs font-semibold uppercase tracking-widest text-indigo-300 mb-4">
+            <p className={`text-xs font-semibold uppercase tracking-widest mb-4 ${t.label}`}>
               Follow Us
             </p>
             <div className="flex gap-3">
@@ -885,7 +973,7 @@ console.log("TEMPLATE ID:", EMAILJS_TEMPLATE_ID);
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="h-10 w-10 rounded-lg border border-slate-600 bg-slate-800/50 flex items-center justify-center text-sm font-semibold text-slate-300 hover:bg-indigo-500 hover:border-indigo-500 hover:text-white transition-all duration-300 hover:scale-110"
+                  className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-300 bg-slate-50 text-sm font-semibold text-slate-600 transition-all duration-300 hover:scale-110 hover:border-indigo-500 hover:bg-indigo-500 hover:text-white"
                   title={social.label}
                 >
                   {social.icon}
@@ -900,7 +988,7 @@ console.log("TEMPLATE ID:", EMAILJS_TEMPLATE_ID);
           data-contact-form
           className={`lg:col-span-2 transform transition-all duration-700 ${
             visibleForm ? "translate-x-0 opacity-100" : "translate-x-12 opacity-0"
-          } rounded-2xl border border-slate-700/50 p-8 md:p-10 backdrop-blur-sm bg-gradient-to-br from-slate-800/30 via-slate-900/40 to-slate-800/30 hover:border-slate-600/50 transition-all duration-300`}
+          } ${formCardClass}`}
         >
           <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
             {/* Honeypot field for basic spam protection - keep hidden from users */}
@@ -908,7 +996,7 @@ console.log("TEMPLATE ID:", EMAILJS_TEMPLATE_ID);
             {/* Full Name & Company */}
             <div className="grid gap-6 md:grid-cols-2">
               <div className="group">
-                <label className="block text-sm font-semibold text-slate-200 mb-2">
+                <label className={labelClass}>
                   Full Name
                 </label>
                 <input
@@ -916,14 +1004,14 @@ console.log("TEMPLATE ID:", EMAILJS_TEMPLATE_ID);
                   name="fullName"
                   required
                   placeholder="John Doe"
-                  className="w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white placeholder-slate-400 transition-all focus:border-indigo-500 focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                  className={inputClass}
                 />
                 {errors.fullName && (
                   <p className="mt-2 text-sm text-rose-300">{errors.fullName}</p>
                 )}
               </div>
               <div className="group">
-                <label className="block text-sm font-semibold text-slate-200 mb-2">
+                <label className={labelClass}>
                   Company Name
                 </label>
                 <input
@@ -931,7 +1019,7 @@ console.log("TEMPLATE ID:", EMAILJS_TEMPLATE_ID);
                   name="companyName"
                   required
                   placeholder="Acme Inc."
-                  className="w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white placeholder-slate-400 transition-all focus:border-indigo-500 focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                  className={inputClass}
                 />
                 {errors.companyName && (
                   <p className="mt-2 text-sm text-rose-300">{errors.companyName}</p>
@@ -942,7 +1030,7 @@ console.log("TEMPLATE ID:", EMAILJS_TEMPLATE_ID);
             {/* Email & Phone */}
             <div className="grid gap-6 md:grid-cols-2">
               <div className="group">
-                <label className="block text-sm font-semibold text-slate-200 mb-2">
+                <label className={labelClass}>
                   Email Address
                 </label>
                 <input
@@ -950,34 +1038,34 @@ console.log("TEMPLATE ID:", EMAILJS_TEMPLATE_ID);
                   name="email"
                   required
                   placeholder="john@acme.com"
-                  className="w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white placeholder-slate-400 transition-all focus:border-indigo-500 focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                  className={inputClass}
                 />
                 {errors.email && (
                   <p className="mt-2 text-sm text-rose-300">{errors.email}</p>
                 )}
               </div>
               <div className="group">
-                <label className="block text-sm font-semibold text-slate-200 mb-2">
+                <label className={labelClass}>
                   Phone Number
                 </label>
                 <input
                   type="tel"
                   name="phone"
                   placeholder="+1 (555) 000-0000"
-                  className="w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white placeholder-slate-400 transition-all focus:border-indigo-500 focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                  className={inputClass}
                 />
               </div>
             </div>
 
             {/* Service Interested */}
             <div className="group">
-              <label className="block text-sm font-semibold text-slate-200 mb-2">
+              <label className={labelClass}>
                 Service Interested In
               </label>
               <select
                 name="service"
                 required
-                className="w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white transition-all focus:border-indigo-500 focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                className={inputClass}
               >
                 <option value="">Select a service...</option>
                 <option value="Web Applications">Web Applications</option>
@@ -995,7 +1083,7 @@ console.log("TEMPLATE ID:", EMAILJS_TEMPLATE_ID);
 
             {/* Message */}
             <div className="group">
-              <label className="block text-sm font-semibold text-slate-200 mb-2">
+              <label className={labelClass}>
                 Project Details / Message
               </label>
               <textarea
@@ -1003,7 +1091,7 @@ console.log("TEMPLATE ID:", EMAILJS_TEMPLATE_ID);
                 required
                 placeholder="Tell us about your project, goals, and any specific requirements..."
                 rows={5}
-                className="w-full rounded-lg border border-slate-600 bg-slate-800/50 px-4 py-3 text-white placeholder-slate-400 transition-all resize-none focus:border-indigo-500 focus:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                className={`${inputClass} resize-none`}
               />
               {errors.message && (
                 <p className="mt-2 text-sm text-rose-300">{errors.message}</p>
@@ -1038,21 +1126,22 @@ console.log("TEMPLATE ID:", EMAILJS_TEMPLATE_ID);
               )}
             </button>
 
-            <p className="text-xs text-slate-400 text-center">
+            <p className={`text-xs text-center ${t.muted}`}>
               We respect your privacy. Your information will only be used to respond to your inquiry.
             </p>
-            <p className="text-xs text-slate-500 text-center">
+            <p className={`text-xs text-center ${t.muted}`}>
               Protected by Google reCAPTCHA for secure form submission.
             </p>
             {recaptchaError && (
-              <p className="mt-2 text-xs text-rose-300 text-center">
+              <p className="mt-2 text-xs text-rose-600 text-center">
                 {recaptchaError}
               </p>
             )}
           </form>
         </div>
       </div>
-    </section>
+      </div>
+    </ServiceSection>
   );
 }
 
@@ -1081,6 +1170,7 @@ function App() {
     <div className="bg-slate-950 text-slate-100 antialiased overflow-x-hidden">
       <Router>
         <ScrollToTop />
+        <LeadCaptureModal />
         <header className="fixed top-0 z-40 w-full backdrop-blur-md bg-gradient-to-b from-slate-950/50 to-slate-950/20 border-b border-slate-700/20 transition-all duration-300 shadow-lg shadow-slate-950/50">
           <div className="relative mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
             <div className="flex items-center gap-4">
@@ -1091,21 +1181,13 @@ function App() {
             </div>
 
             <div className="pointer-events-none absolute inset-x-0 top-1/2 hidden -translate-y-1/2 justify-center md:flex">
-              <nav className="pointer-events-auto flex gap-8 text-sm font-medium text-slate-300">
-                <NavLink sectionId="services" label="Services" />
-                <NavLink sectionId="process" label="Process" />
-                <NavLink sectionId="about" label="About" />
-                <NavLink sectionId="contact" label="Contact" />
-              </nav>
+              <DesktopNav />
             </div>
 
             <div className="flex items-center gap-4">
-              <a
-                href="#contact"
-                className="hidden rounded-full bg-indigo-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-400 hover:shadow-lg hover:shadow-indigo-500/50 md:inline-flex"
-              >
+              <StartProjectLink className="hidden rounded-full bg-indigo-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-400 hover:shadow-lg hover:shadow-indigo-500/50 md:inline-flex">
                 Start a Project
-              </a>
+              </StartProjectLink>
               <div className="md:hidden pr-16">
                 <BrandLogo />
               </div>
@@ -1118,8 +1200,8 @@ function App() {
           path="/"
           element={
             <>
-              <main className="">
-        <section className="relative overflow-hidden min-h-screen w-full">
+              <main className="overflow-x-hidden">
+        <section className="relative min-h-screen w-full overflow-hidden bg-slate-950 text-slate-100">
           <div className="absolute inset-0 bg-gradient-to-b from-indigo-600/20 via-slate-950 to-slate-950" />
           <div className="relative w-full min-h-screen flex items-center">
             <div className="relative w-full min-h-screen overflow-hidden">
@@ -1180,28 +1262,13 @@ function App() {
 
         <ProcessSection />
 
-        <section id="about" className="border-y border-slate-800 bg-slate-900/40">
-          <div className="mx-auto grid max-w-6xl gap-8 px-6 py-16 md:grid-cols-2">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-indigo-300">
-                Why 10Power6
-              </p>
-              <h2 className="mt-3 text-3xl font-extrabold text-white md:text-4xl">
-                A software agency built for speed and quality
-              </h2>
-            </div>
-            <p className="text-slate-300">
-              We blend product strategy, design, development, and growth marketing into one execution team. That means faster delivery, fewer handoffs, and better business results.
-            </p>
-          </div>
-        </section>
-
         <ContactSection />
       </main>
             </>
           }
         />
         <Route path="/services/:slug" element={<ServicePage />} />
+        <Route path="/about" element={<AboutPage />} />
       </Routes>
       </Router>
 

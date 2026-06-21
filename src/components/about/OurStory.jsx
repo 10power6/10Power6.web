@@ -1,0 +1,60 @@
+import { motion } from "framer-motion";
+import { aboutImages } from "../../data/aboutData";
+import SectionHeading from "./SectionHeading";
+import ServiceSection from "../services/ServiceSection";
+import { getThemeClasses } from "../services/theme";
+import { sectionVariant } from "../../utils/motionVariants";
+
+export default function OurStory({ theme = "light" }) {
+  const t = getThemeClasses(theme);
+
+  return (
+    <ServiceSection theme={theme} ariaLabelledBy="our-story-heading">
+      <SectionHeading
+        theme={theme}
+        label="Our Story"
+        title="Turning Ideas Into Digital Products"
+        className="mb-14"
+      />
+
+      <motion.article
+        variants={sectionVariant}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.2 }}
+        className="grid items-center gap-12 lg:grid-cols-2"
+      >
+        <figure className="order-2 lg:order-1">
+          <img
+            src={aboutImages.team}
+            alt="Team members collaborating on a software project"
+            width={1000}
+            height={667}
+            loading="lazy"
+            className={`w-full rounded-[2rem] border object-cover shadow-[0_32px_100px_rgba(15,23,42,0.12)] ${theme === "dark" ? "border-white/10" : "border-slate-200"}`}
+          />
+        </figure>
+
+        <div className="order-1 space-y-6 lg:order-2">
+          <h3 id="our-story-heading" className={`text-2xl font-bold sm:text-3xl ${t.heading}`}>
+            Built for startups and growing businesses
+          </h3>
+          <p className={`text-base leading-8 ${t.body}`}>
+            10Power6 was founded to help startups and businesses turn ideas into digital products.
+            We saw too many teams struggle with fragmented vendors, slow delivery, and software
+            that looked good but failed to drive real business results.
+          </p>
+          <p className={`text-base leading-8 ${t.body}`}>
+            Today, we combine strategy, design, development, and long-term support under one roof.
+            That integrated approach means fewer handoffs, clearer communication, and products that
+            are built to evolve with your business.
+          </p>
+          <p className={`text-base leading-8 ${t.body}`}>
+            We focus on quality, speed, and business outcomes — delivering software that is
+            maintainable, scalable, and aligned with the goals that matter most to your team.
+          </p>
+        </div>
+      </motion.article>
+    </ServiceSection>
+  );
+}
