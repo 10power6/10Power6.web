@@ -7,39 +7,12 @@ import logoFileUrl from "./assets/10Power6Logo.png";
 import ServicePage from "./pages/ServicePage";
 import AboutPage from "./pages/AboutPage";
 import LeadCaptureModal from "./components/LeadCaptureModal";
+import TestimonialsSection from "./components/TestimonialsSection";
+import IntegrationsSection from "./components/IntegrationsSection";
+import HeroCarousel from "./components/HeroCarousel";
 import { useActiveSection, getNavLinkClass, getMobileNavClass } from "./hooks/useActiveSection";
 import ServiceSection from "./components/services/ServiceSection";
 import { getThemeClasses } from "./components/services/theme";
-
-const slides = [
-  {
-    tag: "10Power6 Agency",
-    title: "We build software that scales your business.",
-    body: "From idea to launch, we design and deliver products that turn traffic into revenue.",
-    cta: "Explore Services",
-    href: "#services",
-    image:
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1800&q=80",
-  },
-  {
-    tag: "Growth Focused",
-    title: "Marketing + engineering under one roof.",
-    body: "We combine digital marketing, SEO, and high-performance applications to drive measurable growth.",
-    cta: "Book a Consultation",
-    href: "#contact",
-    image:
-      "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1800&q=80",
-  },
-  {
-    tag: "Modern Delivery",
-    title: "Websites and mobile apps users love.",
-    body: "Fast, secure, and conversion-focused experiences built for long-term growth.",
-    cta: "See What We Build",
-    href: "#services",
-    image:
-      "https://images.unsplash.com/photo-1518773553398-650c184e0bb3?auto=format&fit=crop&w=1800&q=80",
-  },
-];
 
 const services = [
   {
@@ -491,50 +464,51 @@ function ServicesSection() {
 
       <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
         {services.map((svc, idx) => (
-          <motion.article
-            key={svc.name}
-            variants={cardVariant}
-            whileHover={{ y: -8, scale: 1.02 }}
-            className={`group relative overflow-hidden rounded-[28px] border p-6 backdrop-blur-xl transition-all duration-500 ${t.card} ${t.cardHover}`}
-          >
-            <div className="relative z-10 flex h-full flex-col gap-6">
-              <div className="flex items-center gap-4">
-                <motion.div
-                  whileHover={{ y: -2 }}
-                  className={`flex h-16 w-16 items-center justify-center rounded-3xl ring-1 ${t.iconWrap}`}
-                >
-                  <svc.Icon className="h-7 w-7" aria-hidden="true" />
-                </motion.div>
-                <div className="space-y-2">
-                  <p className={`text-xs font-semibold uppercase tracking-[0.24em] ${t.label}`}>Service</p>
-                  <h3 id={`service-${idx}`} className={`text-xl font-semibold ${t.heading}`}>
-                    {svc.name}
-                  </h3>
+          <motion.div key={svc.name} variants={cardVariant} className="h-full">
+            <Link
+              to={`/services/${svc.slug}`}
+              aria-labelledby={`service-${idx}`}
+              className={`group relative flex h-full cursor-pointer flex-col gap-6 overflow-hidden rounded-[28px] border p-6 backdrop-blur-xl transition-all duration-300 ease-out hover:-translate-y-2 hover:border-indigo-400/50 hover:shadow-[0_24px_60px_rgba(99,102,241,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${t.card}`}
+            >
+              <div
+                className="pointer-events-none absolute inset-0 rounded-[28px] bg-gradient-to-br from-indigo-500/0 via-transparent to-purple-500/0 opacity-0 transition-opacity duration-300 group-hover:from-indigo-500/[0.06] group-hover:to-purple-500/[0.08] group-hover:opacity-100"
+                aria-hidden="true"
+              />
+
+              <div className="relative z-10 flex h-full flex-col gap-6">
+                <div className="flex items-center gap-4">
+                  <div
+                    className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-3xl ring-1 transition-transform duration-300 group-hover:-translate-y-0.5 ${t.iconWrap}`}
+                  >
+                    <svc.Icon className="h-7 w-7" aria-hidden="true" />
+                  </div>
+                  <div className="space-y-2">
+                    <p className={`text-xs font-semibold uppercase tracking-[0.24em] ${t.label}`}>Service</p>
+                    <h3 id={`service-${idx}`} className={`text-xl font-semibold ${t.heading}`}>
+                      {svc.name}
+                    </h3>
+                  </div>
+                </div>
+
+                <p className={`flex-1 text-sm leading-7 ${t.body}`}>{svc.description}</p>
+
+                <div className="mt-auto flex items-center justify-between">
+                  <span className={`text-xs font-semibold uppercase tracking-[0.24em] transition-colors duration-300 group-hover:text-indigo-500 ${t.label}`}>
+                    Learn more
+                  </span>
+                  <span
+                    className={`flex h-10 w-10 items-center justify-center rounded-2xl ring-1 transition-all duration-300 group-hover:scale-105 group-hover:shadow-md group-hover:ring-indigo-400/40 ${t.iconWrap}`}
+                    aria-hidden="true"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+                      <path d="M5 12h14" />
+                      <path d="m13 6 6 6-6 6" />
+                    </svg>
+                  </span>
                 </div>
               </div>
-
-              <p className={`text-sm leading-7 ${t.body}`}>{svc.description}</p>
-
-              <div className="mt-auto flex items-center justify-between">
-                <Link
-                  to={`/services/${svc.slug}`}
-                  className={`text-xs font-semibold uppercase tracking-[0.24em] transition ${t.label} hover:opacity-80`}
-                >
-                  Learn more
-                </Link>
-                <Link
-                  to={`/services/${svc.slug}`}
-                  className={`flex h-10 w-10 items-center justify-center rounded-2xl ring-1 transition-all duration-300 ${t.iconWrap} hover:shadow-md`}
-                  aria-label={`Learn more about ${svc.name}`}
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
-                    <path d="M5 12h14" />
-                    <path d="m13 6 6 6-6 6" />
-                  </svg>
-                </Link>
-              </div>
-            </div>
-          </motion.article>
+            </Link>
+          </motion.div>
         ))}
       </motion.div>
     </ServiceSection>
@@ -1156,15 +1130,7 @@ function ScrollToTop() {
 }
 
 function App() {
-  const [activeIndex, setActiveIndex] = useState(0);
   const year = useMemo(() => new Date().getFullYear(), []);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveIndex((current) => (current + 1) % slides.length);
-    }, 4500);
-    return () => clearInterval(timer);
-  }, []);
 
   return (
     <div className="bg-slate-950 text-slate-100 antialiased overflow-x-hidden">
@@ -1201,66 +1167,15 @@ function App() {
           element={
             <>
               <main className="overflow-x-hidden">
-        <section className="relative min-h-screen w-full overflow-hidden bg-slate-950 text-slate-100">
-          <div className="absolute inset-0 bg-gradient-to-b from-indigo-600/20 via-slate-950 to-slate-950" />
-          <div className="relative w-full min-h-screen flex items-center">
-            <div className="relative w-full min-h-screen overflow-hidden">
-              {slides.map((slide, index) => (
-                <article
-                  key={slide.title}
-                  className={`absolute inset-0 transition-all duration-700 ${
-                    index === activeIndex
-                      ? "pointer-events-auto scale-100 opacity-100"
-                      : "pointer-events-none scale-[1.02] opacity-0"
-                  }`}
-                  aria-hidden={index !== activeIndex}
-                >
-                  <img
-                    src={slide.image}
-                    alt={slide.title}
-                    className="h-full w-full object-cover opacity-55"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent" />
-                  <div className="absolute inset-0 flex items-center px-8 md:px-14">
-                    <div className="max-w-xl space-y-5">
-                      <p className="text-sm font-semibold uppercase tracking-[0.28em] text-indigo-300">
-                        {slide.tag}
-                      </p>
-                      <h1 className="text-4xl font-extrabold leading-tight text-white md:text-5xl">
-                        {slide.title}
-                      </h1>
-                      <p className="text-base text-slate-300 md:text-lg">{slide.body}</p>
-                      <a
-                        href={slide.href}
-                        className="inline-flex rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-200"
-                      >
-                        {slide.cta}
-                      </a>
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
-
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex items-center justify-center gap-3" aria-label="Jumbotron slide navigation">
-              {slides.map((slide, index) => (
-                <button
-                  key={slide.tag}
-                  type="button"
-                  onClick={() => setActiveIndex(index)}
-                  className={`h-2.5 w-8 rounded-full transition ${
-                    index === activeIndex ? "bg-indigo-400" : "bg-slate-600 hover:bg-slate-500"
-                  }`}
-                  aria-label={`Go to slide ${index + 1}`}
-                />
-              ))}
-            </div>
-          </div>
-        </section>
+        <HeroCarousel />
 
         <ServicesSection />
 
         <ProcessSection />
+
+        <TestimonialsSection theme="dark" />
+
+        <IntegrationsSection />
 
         <ContactSection />
       </main>

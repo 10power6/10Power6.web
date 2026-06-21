@@ -38,7 +38,7 @@ export default function ServiceFeatures({ page, theme = "light" }) {
               <motion.article
                 key={item.title}
                 variants={cardVariant}
-                whileHover={{ x: 4 }}
+                whileHover={{ x: 4, scale: 1.01 }}
                 className={`flex gap-4 rounded-2xl border p-5 transition ${t.card} ${t.cardHover}`}
               >
                 <div className={`mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ring-1 ${t.iconWrap}`}>
@@ -75,24 +75,17 @@ export default function ServiceFeatures({ page, theme = "light" }) {
               <motion.li
                 key={item}
                 variants={cardVariant}
+                whileHover={{ x: 4 }}
                 className={`flex items-start gap-3 rounded-xl border px-5 py-4 text-sm leading-7 ${t.card}`}
               >
-                <span className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${theme === "dark" ? "bg-indigo-400" : "bg-indigo-500"}`} aria-hidden="true" />
+                <span
+                  className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${theme === "dark" ? "bg-indigo-400" : "bg-indigo-500"}`}
+                  aria-hidden="true"
+                />
                 <span className={t.body}>{item}</span>
               </motion.li>
             ))}
           </motion.ul>
-
-          <figure className="mt-10">
-            <img
-              src={page.images.feature}
-              alt={page.images.featureAlt}
-              width={1000}
-              height={667}
-              loading="lazy"
-              className={`w-full rounded-[2rem] border object-cover ${theme === "dark" ? "border-white/10" : "border-slate-200 shadow-lg"}`}
-            />
-          </figure>
         </div>
       </motion.div>
     </ServiceSection>

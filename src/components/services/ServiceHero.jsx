@@ -44,17 +44,22 @@ export default function ServiceHero({ page, onStartProject }) {
         <motion.figure
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
+          whileHover={{ scale: 1.02, y: -4 }}
           transition={{ duration: 0.85, ease: "easeOut" }}
           className="w-full lg:w-[42%]"
         >
-          <img
-            src={page.images.hero}
-            alt={page.images.heroAlt}
-            width={1200}
-            height={800}
-            loading="eager"
-            className="w-full rounded-[2rem] border border-white/10 object-cover shadow-[0_40px_120px_rgba(15,23,42,0.4)]"
-          />
+          <div className="relative overflow-hidden rounded-[2rem] border border-white/10 shadow-[0_40px_120px_rgba(15,23,42,0.4)]">
+            <img
+              src={page.images.hero}
+              alt={page.images.heroAlt}
+              width={1200}
+              height={800}
+              loading="eager"
+              decoding="async"
+              className="aspect-[4/3] w-full object-cover"
+            />
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-transparent" aria-hidden="true" />
+          </div>
         </motion.figure>
       </div>
     </section>

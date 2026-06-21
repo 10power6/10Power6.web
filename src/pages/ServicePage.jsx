@@ -6,6 +6,7 @@ import { useNavigateToContact } from "../hooks/useNavigateToContact";
 import ServiceHero from "../components/services/ServiceHero";
 import ServiceOverview from "../components/services/ServiceOverview";
 import ServiceBenefits from "../components/services/ServiceBenefits";
+import ServiceShowcase from "../components/services/ServiceShowcase";
 import ServiceFeatures from "../components/services/ServiceFeatures";
 import ServiceTechnologies from "../components/services/ServiceTechnologies";
 import ServiceIndustries from "../components/services/ServiceIndustries";
@@ -50,8 +51,10 @@ export default function ServicePage() {
       <ServiceHero page={page} onStartProject={navigateToContact} />
       <ServiceOverview page={page} theme="light" />
       <ServiceBenefits page={page} theme="dark" />
+      <ServiceShowcase page={page} start={0} end={2} />
       <ServiceFeatures page={page} theme="light" />
       <ServiceTechnologies page={page} theme="dark" />
+      <ServiceShowcase page={page} start={2} />
       <ServiceIndustries page={page} theme="light" />
       <ServiceProcess page={page} theme="dark" />
       <ServiceFAQ page={page} theme="light" />
