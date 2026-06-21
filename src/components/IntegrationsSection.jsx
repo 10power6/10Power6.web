@@ -4,9 +4,21 @@ import { ArrowRight } from "lucide-react";
 import { integrationRowOne, integrationRowTwo } from "../data/integrationsData";
 import { sectionVariant } from "../utils/motionVariants";
 
+function getIntegrationIconSources(slug) {
+  return [
+    `https://cdn.jsdelivr.net/npm/simple-icons/icons/${slug}.svg`,
+    `https://cdn.jsdelivr.net/npm/simple-icons@11.0.0/icons/${slug}.svg`,
+  ];
+}
+
 function IntegrationLogoCard({ integration }) {
-  const [hasError, setHasError] = useState(false);
-  const iconSrc = `https://cdn.simpleicons.org/${integration.slug}/${integration.color}`;
+  const [sourceIndex, setSourceIndex] = useState(0);
+  const sources = getIntegrationIconSources(integration.slug);
+  const hasError = sourceIndex >= sources.length;
+  const iconUrl = sources[sourceIndex];
+  const brandColor = `#${integration.color}`;
+
+  const advanceSource = () => setSourceIndex((current) => current + 1);
 
   return (
     <div
@@ -14,16 +26,30 @@ function IntegrationLogoCard({ integration }) {
       className="group/card flex h-[3.75rem] w-[3.75rem] shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] shadow-[0_0_0_1px_rgba(99,102,241,0.06),0_8px_32px_rgba(0,0,0,0.35)] backdrop-blur-md transition-all duration-300 hover:scale-110 hover:border-indigo-400/40 hover:bg-indigo-500/10 hover:shadow-[0_0_24px_rgba(99,102,241,0.25)] sm:h-[4.5rem] sm:w-[4.5rem]"
     >
       {!hasError ? (
-        <img
-          src={iconSrc}
-          alt=""
-          width={28}
-          height={28}
-          loading="lazy"
-          decoding="async"
-          className="h-7 w-7 object-contain opacity-90 transition-opacity duration-300 group-hover/card:opacity-100 sm:h-8 sm:w-8"
-          onError={() => setHasError(true)}
-        />
+        <>
+          <img
+            src={iconUrl}
+            alt=""
+            className="hidden"
+            onError={advanceSource}
+            referrerPolicy="no-referrer"
+          />
+          <span
+            aria-hidden="true"
+            className="h-7 w-7 transition-transform duration-300 group-hover/card:scale-105 sm:h-8 sm:w-8"
+            style={{
+              backgroundColor: brandColor,
+              maskImage: `url("${iconUrl}")`,
+              WebkitMaskImage: `url("${iconUrl}")`,
+              maskSize: "contain",
+              WebkitMaskSize: "contain",
+              maskRepeat: "no-repeat",
+              WebkitMaskRepeat: "no-repeat",
+              maskPosition: "center",
+              WebkitMaskPosition: "center",
+            }}
+          />
+        </>
       ) : (
         <span className="px-1 text-center text-[10px] font-bold uppercase tracking-wide text-indigo-200 sm:text-xs">
           {integration.name.slice(0, 3)}
