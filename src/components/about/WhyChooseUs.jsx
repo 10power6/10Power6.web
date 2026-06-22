@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { whyChooseItems } from "../../data/aboutData";
-import SectionHeading from "./SectionHeading";
-import ServiceSection from "../services/ServiceSection";
+import ServiceSection, { ServiceSectionHeading } from "../services/ServiceSection";
 import { getThemeClasses } from "../services/theme";
 import { cardVariant, containerVariant } from "../../utils/motionVariants";
 
@@ -10,12 +9,12 @@ export default function WhyChooseUs({ theme = "light" }) {
 
   return (
     <ServiceSection theme={theme} ariaLabelledBy="why-choose-heading">
-      <SectionHeading
+      <ServiceSectionHeading
         theme={theme}
         label="Why Choose 10Power6"
         title="A Partner You Can Count On"
         description="We combine technical excellence with a business-first mindset to deliver software that makes a real difference."
-        className="mb-14"
+        titleId="why-choose-heading"
       />
 
       <motion.div
@@ -35,10 +34,7 @@ export default function WhyChooseUs({ theme = "light" }) {
             <div className={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl ring-1 ${t.iconWrap}`}>
               <item.Icon className="h-5 w-5" aria-hidden="true" />
             </div>
-            <h3
-              id={item.title === whyChooseItems[0].title ? "why-choose-heading" : undefined}
-              className={`text-lg font-semibold ${t.heading}`}
-            >
+            <h3 className={`text-lg font-semibold ${t.heading}`}>
               {item.title}
             </h3>
             <p className={`mt-3 text-sm leading-7 ${t.body}`}>{item.description}</p>

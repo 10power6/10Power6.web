@@ -1,11 +1,11 @@
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import ServiceSection, { ServiceSectionHeading } from "./services/ServiceSection";
 import { getThemeClasses } from "./services/theme";
-import { resolveProcessVisual } from "../data/processVisuals";
+import { resolveProcessStepsVisuals } from "../data/processVisuals";
 import { cardVariant, containerVariant } from "../utils/motionVariants";
 
-function ProcessStepCard({ step, index, total, theme }) {
-  const visual = resolveProcessVisual(step.title, index);
+function ProcessStepCard({ step, index, total, theme, visual }) {
   const t = getThemeClasses(theme);
   const isDark = theme === "dark";
   const progress = ((index + 1) / total) * 100;
@@ -84,6 +84,7 @@ export default function ProcessStepsGrid({
   titleId = "process-steps-heading",
 }) {
   const isDark = theme === "dark";
+  const stepVisuals = useMemo(() => resolveProcessStepsVisuals(steps), [steps]);
   const gridClass =
     steps.length <= 4
       ? "mt-14 grid gap-6 sm:grid-cols-2 xl:grid-cols-4"
@@ -128,7 +129,7 @@ export default function ProcessStepsGrid({
       >
         {steps.map((step, index) => (
           <motion.li key={`${step.number}-${step.title}`} variants={cardVariant} role="listitem">
-            <ProcessStepCard step={step} index={index} total={steps.length} theme={theme} />
+            <ProcessStepCard step={step} index={index} total={steps.length} theme={theme} visual={stepVisuals[index]} />
           </motion.li>
         ))}
       </motion.ol>

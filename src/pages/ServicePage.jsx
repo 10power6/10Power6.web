@@ -47,7 +47,7 @@ export default function ServicePage() {
   }
 
   return (
-    <main className="overflow-x-hidden">
+    <main>
       <ServiceHero page={page} onStartProject={navigateToContact} />
       <ServiceOverview page={page} theme="light" />
       <ServiceBenefits page={page} theme="dark" />

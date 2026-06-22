@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { whatWeDoItems } from "../../data/aboutData";
-import SectionHeading from "./SectionHeading";
-import ServiceSection from "../services/ServiceSection";
+import ServiceSection, { ServiceSectionHeading } from "../services/ServiceSection";
 import { getThemeClasses } from "../services/theme";
 import { cardVariant, containerVariant } from "../../utils/motionVariants";
 
@@ -15,12 +14,12 @@ export default function WhatWeDo({ theme = "dark" }) {
         <div className={`absolute right-6 top-1/4 h-56 w-56 rounded-full blur-3xl ${theme === "dark" ? "bg-gradient-to-br from-purple-500/10 to-transparent" : "bg-gradient-to-br from-purple-500/5 to-transparent"}`} />
       </div>
 
-      <SectionHeading
+      <ServiceSectionHeading
         theme={theme}
         label="What We Do"
         title="End-to-End Software Services"
         description="From concept to launch and beyond, we deliver the full stack of services modern businesses need to compete and grow."
-        className="mb-14"
+        titleId="what-we-do-heading"
       />
 
       <motion.div
@@ -41,13 +40,10 @@ export default function WhatWeDo({ theme = "dark" }) {
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(99,102,241,0.12),_transparent_42%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
             )}
             <div className="relative z-10">
-              <div className={`mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl ring-1 ${t.iconWrap}`}>
-                <item.Icon className="h-6 w-6" aria-hidden="true" />
+              <div className={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl ring-1 ${t.iconWrap}`}>
+                <item.Icon className="h-5 w-5" aria-hidden="true" />
               </div>
-              <h3
-                id={item.title === whatWeDoItems[0].title ? "what-we-do-heading" : undefined}
-                className={`text-lg font-semibold ${t.heading}`}
-              >
+              <h3 className={`text-lg font-semibold ${t.heading}`}>
                 {item.title}
               </h3>
               <p className={`mt-3 text-sm leading-7 ${t.body}`}>{item.description}</p>

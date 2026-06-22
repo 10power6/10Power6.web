@@ -6,7 +6,7 @@ import ProcessStepsGrid from "./components/ProcessStepsGrid";
 import { homeProcessSteps } from "./data/processVisuals";
 import MobileMenu from "./components/MobileMenu";
 import Footer from "./components/Footer";
-import { Code2, TrendingUp, Smartphone, MonitorSmartphone, Briefcase, LifeBuoy, Bot, Phone } from "lucide-react";
+import { Phone } from "lucide-react";
 import logoFileUrl from "./assets/10Power6Logo.png";
 import ServicePage from "./pages/ServicePage";
 import AboutPage from "./pages/AboutPage";
@@ -14,68 +14,10 @@ import LeadCaptureModal from "./components/LeadCaptureModal";
 import TestimonialsSection from "./components/TestimonialsSection";
 import IntegrationsSection from "./components/IntegrationsSection";
 import HeroCarousel from "./components/HeroCarousel";
+import ServicesSection from "./components/ServicesSection";
 import { useActiveSection, getNavLinkClass } from "./hooks/useActiveSection";
 import ServiceSection from "./components/services/ServiceSection";
 import { getThemeClasses } from "./components/services/theme";
-
-const services = [
-  {
-    name: "Web Applications",
-    slug: "web-applications",
-    description:
-      "Custom web applications engineered for scalability, performance, and seamless user experiences. We build powerful digital platforms tailored to automate workflows, improve efficiency, and accelerate business growth using modern technologies and cloud architecture.",
-    Icon: Code2,
-    color: "from-blue-600/20 to-cyan-500/10",
-  },{
-    name: "AI Integration",
-    slug: "ai-integration",
-    description:
-      "Intelligent AI integrations that automate processes, enhance customer experiences, and unlock operational efficiency. From AI chatbots to workflow automation and custom AI solutions, we help businesses leverage artificial intelligence for modern growth.",
-    Icon: Bot,
-    color: "from-violet-600/20 to-fuchsia-500/10",
-  },
-  {
-    name: "Digital Marketing",
-    slug: "digital-marketing",
-    description:
-      "Data-driven digital marketing strategies focused on generating qualified leads, increasing online visibility, and maximizing ROI. From paid advertising to conversion optimization, we help brands grow through intelligent marketing solutions.",
-    Icon: TrendingUp,
-    color: "from-purple-600/20 to-pink-500/10",
-  },
-  {
-    name: "Mobile Applications",
-    slug: "mobile-applications",
-    description:
-      "Modern iOS and Android mobile applications designed with intuitive interfaces, high performance, and seamless functionality. We create mobile experiences that engage users, strengthen customer retention, and scale with your business.",
-    Icon: Smartphone,
-    color: "from-pink-600/20 to-rose-500/10",
-  },
-  {
-    name: "Websites",
-    slug: "websites",
-    description:
-      "Premium responsive websites crafted to communicate brand value, improve credibility, and convert visitors into customers. Every website is optimized for speed, accessibility, SEO, and exceptional user experience across all devices.",
-    Icon: MonitorSmartphone,
-    color: "from-green-600/20 to-emerald-500/10",
-  },
-  {
-    name: "IT Consultancy",
-    slug: "it-consultancy",
-    description:
-      "Expert technology advisory to help you assess systems, plan infrastructure, reduce IT risk, and make confident decisions. From cloud strategy and vendor selection to security reviews and digital transformation roadmaps.",
-    Icon: Briefcase,
-    color: "from-amber-500/20 to-orange-500/10",
-  },
-  {
-    name: "Strategy & Support",
-    slug: "strategy-support",
-    description:
-      "Strategic consulting, launch planning, and ongoing technical support to help businesses scale with confidence. We partner with clients long-term to optimize operations, improve digital infrastructure, and support continuous growth.",
-    Icon: LifeBuoy,
-    color: "from-indigo-600/20 to-blue-500/10",
-  },
- 
-];
 
 // Custom hook for navigation with scroll-to-section logic
 function useSmartNavigation() {
@@ -215,94 +157,6 @@ function BrandLogo() {
       />
       <span className="sr-only">10Power6</span>
     </motion.a>
-  );
-}
-
-function ServicesSection() {
-  const theme = "light";
-  const t = getThemeClasses(theme);
-
-  const container = {
-    hidden: {},
-    show: {
-      transition: { staggerChildren: 0.08, delayChildren: 0.1 },
-    },
-  };
-
-  const cardVariant = {
-    hidden: { opacity: 0, y: 32, scale: 0.96 },
-    show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] } },
-  };
-
-  return (
-    <ServiceSection theme={theme} id="services" ariaLabelledBy="services-heading" className="relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-6 top-10 h-72 w-72 rounded-full bg-gradient-to-br from-indigo-500/5 to-transparent blur-3xl" />
-        <div className="absolute right-6 top-1/4 h-56 w-56 rounded-full bg-gradient-to-br from-purple-500/5 to-transparent blur-3xl" />
-      </div>
-
-      <div className="mx-auto mb-14 max-w-3xl text-center">
-        <span className={`section-eyebrow inline-flex rounded-full border px-4 py-1.5 text-xs font-bold uppercase backdrop-blur-sm ${t.badge}`}>
-          Selected Services
-        </span>
-        <h2 id="services-heading" className={`section-headline mt-6 text-4xl font-bold sm:text-5xl ${t.heading}`}>
-          Digital Solutions Built for Modern Growth
-        </h2>
-        <p className={`mx-auto mt-5 max-w-2xl text-base font-medium leading-8 sm:text-lg sm:leading-8 ${t.subheading}`}>
-          We engineer scalable digital experiences, AI-powered systems, and growth-focused solutions designed to help ambitious businesses lead in the modern digital era.
-        </p>
-      </div>
-
-      <motion.div variants={container} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-        {services.map((svc, idx) => (
-          <motion.div key={svc.name} variants={cardVariant} className="h-full">
-            <Link
-              to={`/services/${svc.slug}`}
-              aria-labelledby={`service-${idx}`}
-              className={`group relative flex h-full cursor-pointer flex-col gap-6 overflow-hidden rounded-[28px] border p-6 backdrop-blur-xl transition-all duration-300 ease-out hover:-translate-y-2 hover:border-indigo-400/50 hover:shadow-[0_24px_60px_rgba(99,102,241,0.14)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white ${t.card}`}
-            >
-              <div
-                className="pointer-events-none absolute inset-0 rounded-[28px] bg-gradient-to-br from-indigo-500/0 via-transparent to-purple-500/0 opacity-0 transition-opacity duration-300 group-hover:from-indigo-500/[0.06] group-hover:to-purple-500/[0.08] group-hover:opacity-100"
-                aria-hidden="true"
-              />
-
-              <div className="relative z-10 flex h-full flex-col gap-6">
-                <div className="flex items-center gap-4">
-                  <div
-                    className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-3xl ring-1 transition-transform duration-300 group-hover:-translate-y-0.5 ${t.iconWrap}`}
-                  >
-                    <svc.Icon className="h-7 w-7" aria-hidden="true" />
-                  </div>
-                  <div className="space-y-2">
-                    <p className={`text-xs font-semibold uppercase tracking-[0.24em] ${t.label}`}>Service</p>
-                    <h3 id={`service-${idx}`} className={`text-xl font-semibold ${t.heading}`}>
-                      {svc.name}
-                    </h3>
-                  </div>
-                </div>
-
-                <p className={`flex-1 text-sm leading-7 ${t.body}`}>{svc.description}</p>
-
-                <div className="mt-auto flex items-center justify-between">
-                  <span className={`text-xs font-semibold uppercase tracking-[0.24em] transition-colors duration-300 group-hover:text-indigo-500 ${t.label}`}>
-                    Learn more
-                  </span>
-                  <span
-                    className={`flex h-10 w-10 items-center justify-center rounded-2xl ring-1 transition-all duration-300 group-hover:scale-105 group-hover:shadow-md group-hover:ring-indigo-400/40 ${t.iconWrap}`}
-                    aria-hidden="true"
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
-                      <path d="M5 12h14" />
-                      <path d="m13 6 6 6-6 6" />
-                    </svg>
-                  </span>
-                </div>
-              </div>
-            </Link>
-          </motion.div>
-        ))}
-      </motion.div>
-    </ServiceSection>
   );
 }
 
@@ -843,7 +697,7 @@ function ScrollToTop() {
 
 function App() {
   return (
-    <div className="bg-slate-950 text-slate-100 antialiased overflow-x-hidden">
+    <div className="bg-slate-950 text-slate-100 antialiased">
       <Router>
         <ScrollToTop />
         <LeadCaptureModal />
@@ -876,7 +730,7 @@ function App() {
           path="/"
           element={
             <>
-              <main className="overflow-x-hidden">
+              <main>
         <HeroCarousel />
 
         <ServicesSection />

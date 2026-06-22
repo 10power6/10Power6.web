@@ -60,20 +60,55 @@ export const processVisuals = {
 
 const visualOrder = ["ideate", "design", "develop", "test", "launch", "support", "marketing", "strategy"];
 
-export function resolveProcessVisual(title, index = 0) {
+const visualRules = [
+  { key: "marketing", pattern: /campaign|marketing|ads|creative setup/ },
+  { key: "ideate", pattern: /discovery|audit|research|assessment|analysis|ideate/ },
+  { key: "design", pattern: /design|prototype|wireframe|mockup|architecture|content/ },
+  { key: "develop", pattern: /develop|implement|build|execution|engineering|coding/ },
+  { key: "test", pattern: /\btest|\bqa|quality assurance/ },
+  { key: "launch", pattern: /launch|deploy|release|growth/ },
+  { key: "support", pattern: /support|partnership|maintain|ongoing/ },
+  { key: "strategy", pattern: /optimiz|scale|report|analytics|strategy|planning|roadmap|consult/ },
+];
+
+export function getProcessVisualKey(title) {
   const text = title.toLowerCase();
 
-  if (/campaign|marketing|ads|creative/.test(text)) return processVisuals.marketing;
-  if (/test|qa|quality/.test(text)) return processVisuals.test;
-  if (/support|partnership|maintain|ongoing/.test(text)) return processVisuals.support;
-  if (/launch|deploy|release|growth/.test(text)) return processVisuals.launch;
-  if (/optimiz|scale|report|analytics/.test(text)) return processVisuals.strategy;
-  if (/design|prototype|wireframe|ux|ui|content|architecture/.test(text)) return processVisuals.design;
-  if (/develop|implement|build|execution|engineering|coding/.test(text)) return processVisuals.develop;
-  if (/strategy|planning|roadmap|consult/.test(text)) return processVisuals.strategy;
-  if (/discovery|research|assessment|audit|ideate|analysis/.test(text)) return processVisuals.ideate;
+  for (const rule of visualRules) {
+    if (rule.pattern.test(text)) {
+      return rule.key;
+    }
+  }
 
-  return processVisuals[visualOrder[index % visualOrder.length]];
+  return null;
+}
+
+export function resolveProcessStepsVisuals(steps) {
+  const usedImages = new Set();
+
+  return steps.map((step, index) => {
+    const preferredKey = getProcessVisualKey(step.title);
+    const candidateKeys = [
+      preferredKey,
+      visualOrder[index],
+      ...visualOrder,
+    ].filter(Boolean);
+
+    const uniqueCandidates = [...new Set(candidateKeys)];
+    let selectedKey =
+      uniqueCandidates.find((key) => !usedImages.has(processVisuals[key].image)) ??
+      visualOrder.find((key) => !usedImages.has(processVisuals[key].image)) ??
+      visualOrder[index % visualOrder.length];
+
+    usedImages.add(processVisuals[selectedKey].image);
+    return processVisuals[selectedKey];
+  });
+}
+
+/** @deprecated Use resolveProcessStepsVisuals for step lists to avoid duplicate images */
+export function resolveProcessVisual(title, index = 0) {
+  const key = getProcessVisualKey(title) ?? visualOrder[index % visualOrder.length];
+  return processVisuals[key];
 }
 
 export const homeProcessSteps = [

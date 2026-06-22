@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { aboutImages } from "../../data/aboutData";
-import SectionHeading from "./SectionHeading";
-import ServiceSection from "../services/ServiceSection";
+import ServiceSection, { ServiceSectionHeading } from "../services/ServiceSection";
 import { getThemeClasses } from "../services/theme";
 import { sectionVariant } from "../../utils/motionVariants";
 
@@ -10,11 +9,11 @@ export default function OurStory({ theme = "light" }) {
 
   return (
     <ServiceSection theme={theme} ariaLabelledBy="our-story-heading">
-      <SectionHeading
+      <ServiceSectionHeading
         theme={theme}
         label="Our Story"
         title="Turning Ideas Into Digital Products"
-        className="mb-14"
+        titleId="our-story-heading"
       />
 
       <motion.article
@@ -36,7 +35,7 @@ export default function OurStory({ theme = "light" }) {
         </figure>
 
         <div className="order-1 space-y-6 lg:order-2">
-          <h3 id="our-story-heading" className={`text-2xl font-bold sm:text-3xl ${t.heading}`}>
+          <h3 className={`text-2xl font-bold sm:text-3xl ${t.heading}`}>
             Built for startups and growing businesses
           </h3>
           <p className={`text-base leading-8 ${t.body}`}>

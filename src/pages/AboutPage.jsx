@@ -14,7 +14,7 @@ export default function AboutPage() {
   const navigateToContact = useNavigateToContact();
 
   return (
-    <main className="overflow-x-hidden">
+    <main>
       <AboutHero onStartProject={navigateToContact} />
       <OurStory theme="light" />
       <WhatWeDo theme="dark" />

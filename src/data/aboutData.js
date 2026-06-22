@@ -28,6 +28,15 @@ export const ABOUT_SEO = {
     "10Power6 is a software development agency specializing in web applications, mobile apps, AI solutions, and custom software development for startups and businesses.",
 };
 
+export const ABOUT_HERO = {
+  label: "About 10Power6",
+  headline: "Building Software That Helps Businesses Grow",
+  subheading:
+    "10Power6 is a software agency focused on creating scalable web applications, mobile apps, AI solutions, and digital experiences that help businesses launch, grow, and operate more efficiently.",
+  cta: "Start a Project",
+  imageAlt: "Software development team collaborating in a modern office",
+};
+
 export const aboutImages = {
   hero: heroImage,
   team: teamImage,
