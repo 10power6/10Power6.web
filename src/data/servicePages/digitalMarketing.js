@@ -7,7 +7,7 @@ import showcaseTwoImg from "../../assets/services/digital-marketing/showcase-two
 export default {
   slug: "digital-marketing",
   title: "Digital Marketing",
-  seoTitle: "Digital Marketing Agency Services | 10Power6 Growth Marketing",
+  seoTitle: "Digital Marketing Services | 10Power6",
   seoDescription:
     "10Power6 provides data-driven digital marketing services including paid advertising, SEO, content strategy, and conversion optimization to help businesses grow online revenue.",
   images: {

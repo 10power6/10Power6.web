@@ -1,10 +1,6 @@
-# 10Power6 Agency Website
+# 10Power6 – Scalable Software & AI Solutions
 
-React + Tailwind website for 10Power6 with:
-
-- Sliding jumbotron hero section
-- Service cards for Web Applications, Digital Marketing, SEO, Websites, and Mobile Apps
-- About and contact call-to-action sections
+Marketing website for 10Power6 — scalable software and AI solutions for modern businesses.
 
 ## Run locally
 

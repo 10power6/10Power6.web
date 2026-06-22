@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import ServiceSection from "../services/ServiceSection";
 import { sectionVariant } from "../../utils/motionVariants";
+import { BRAND_NAME } from "../../data/branding";
 
 export default function AboutCTA({ onStartProject, theme = "dark" }) {
   return (
@@ -22,8 +23,8 @@ export default function AboutCTA({ onStartProject, theme = "dark" }) {
               Let&apos;s Build Something Great Together
             </h2>
             <p className="mt-4 text-base leading-8 text-slate-300">
-              Whether you&apos;re launching a startup or modernizing an existing business, 10Power6
-              is ready to help bring your ideas to life.
+              Whether you&apos;re launching a new product or modernizing existing systems, {BRAND_NAME} is
+              ready to help you design, build, and scale intelligent solutions.
             </p>
           </header>
           <div className="shrink-0">

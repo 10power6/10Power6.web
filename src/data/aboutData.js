@@ -21,20 +21,19 @@ import {
 import heroImage from "../assets/about/hero.webp";
 import teamImage from "../assets/about/team-collaboration.webp";
 import processImage from "../assets/about/development-process.webp";
+import { BRAND_DESCRIPTION, BRAND_LABEL } from "./branding";
 
 export const ABOUT_SEO = {
-  title: "About Us | 10Power6 - Software Development Agency",
-  description:
-    "10Power6 is a software development agency specializing in web applications, mobile apps, AI solutions, and custom software development for startups and businesses.",
+  title: `About Us | ${BRAND_LABEL}`,
+  description: BRAND_DESCRIPTION,
 };
 
 export const ABOUT_HERO = {
-  label: "About 10Power6",
-  headline: "Building Software That Helps Businesses Grow",
-  subheading:
-    "10Power6 is a software agency focused on creating scalable web applications, mobile apps, AI solutions, and digital experiences that help businesses launch, grow, and operate more efficiently.",
+  label: BRAND_LABEL,
+  headline: "Technology built for intelligent growth",
+  subheading: BRAND_DESCRIPTION,
   cta: "Start a Project",
-  imageAlt: "Software development team collaborating in a modern office",
+  imageAlt: "Technology team collaborating on scalable software and AI solutions",
 };
 
 export const aboutImages = {

@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import logoFileUrl from "../assets/10Power6Logo.png";
 import { services } from "../serviceData";
 import { useActiveSection } from "../hooks/useActiveSection";
+import { BRAND_TAGLINE } from "../data/branding";
 
 const PANEL_EASE = [0.32, 0.72, 0, 1];
 const PANEL_DURATION = 0.44;
@@ -354,7 +355,7 @@ export default function MobileMenu() {
 
             <div className="relative z-10 shrink-0 px-6 pb-8 pt-4">
               <p className="text-center text-xs font-medium tracking-wide text-slate-500/90">
-                Building software that scales businesses.
+                {BRAND_TAGLINE} for modern businesses.
               </p>
             </div>
           </div>

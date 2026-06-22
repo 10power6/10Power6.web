@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { aboutImages } from "../../data/aboutData";
+import { BRAND_NAME } from "../../data/branding";
 import ServiceSection, { ServiceSectionHeading } from "../services/ServiceSection";
 import { getThemeClasses } from "../services/theme";
 import { sectionVariant } from "../../utils/motionVariants";
@@ -39,9 +40,12 @@ export default function OurStory({ theme = "light" }) {
             Built for startups and growing businesses
           </h3>
           <p className={`text-base leading-8 ${t.body}`}>
-            10Power6 was founded to help startups and businesses turn ideas into digital products.
-            We saw too many teams struggle with fragmented vendors, slow delivery, and software
-            that looked good but failed to drive real business results.
+            {BRAND_NAME} was founded to help teams turn ambitious ideas into intelligent digital products —
+            combining strategy, design, and engineering to deliver technology that scales.
+          </p>
+          <p className={`text-base leading-8 ${t.body}`}>
+            We saw too many businesses struggle with fragmented vendors, slow delivery, and platforms
+            that looked polished but failed to drive measurable growth.
           </p>
           <p className={`text-base leading-8 ${t.body}`}>
             Today, we combine strategy, design, development, and long-term support under one roof.

@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Github, Linkedin, Youtube } from "lucide-react";
 import logoFileUrl from "../assets/10Power6Logo.png";
 import { FOOTER_COLUMNS, FOOTER_LEGAL, FOOTER_SOCIAL } from "../data/footerData";
+import { BRAND_TAGLINE } from "../data/branding";
 
 function XIcon({ className }) {
   return (
@@ -125,7 +126,7 @@ export default function Footer() {
               </Link>
 
               <p className="mt-5 max-w-xs text-sm leading-7 text-white/60">
-                Building Scalable Software &amp; AI Solutions.
+                {BRAND_TAGLINE}.
               </p>
 
               <div className="mt-8 flex items-center gap-3">

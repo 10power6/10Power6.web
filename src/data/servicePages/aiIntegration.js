@@ -7,7 +7,7 @@ import showcaseTwoImg from "../../assets/services/ai-integration/showcase-two.we
 export default {
   slug: "ai-integration",
   title: "AI Integration",
-  seoTitle: "AI Integration & Automation Services | 10Power6 Software Agency",
+  seoTitle: "AI Integration & Automation Services | 10Power6",
   seoDescription:
     "10Power6 delivers AI integration services including chatbots, workflow automation, predictive analytics, and custom AI solutions for businesses seeking intelligent digital transformation.",
   images: {

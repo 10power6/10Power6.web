@@ -18,7 +18,7 @@ const defaultProcess = {
 export default {
   slug: "web-applications",
   title: "Web Applications",
-  seoTitle: "Custom Web Application Development | 10Power6 Software Agency",
+  seoTitle: "Custom Web Application Development | 10Power6",
   seoDescription:
     "10Power6 builds scalable custom web applications, SaaS platforms, and enterprise portals. Modern architecture, clean code, and business-focused delivery for startups and growing companies.",
   images: {

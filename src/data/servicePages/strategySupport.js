@@ -7,7 +7,7 @@ import showcaseTwoImg from "../../assets/services/strategy-support/showcase-two.
 export default {
   slug: "strategy-support",
   title: "Strategy & Support",
-  seoTitle: "Software Strategy, Launch Planning & Support | 10Power6 Agency",
+  seoTitle: "Software Strategy, Launch Planning & Support | 10Power6",
   seoDescription:
     "10Power6 provides software strategy consulting, product roadmapping, launch planning, and ongoing technical support to help businesses scale digital products with confidence.",
   images: {

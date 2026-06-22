@@ -16,6 +16,7 @@ import IntegrationsSection from "./components/IntegrationsSection";
 import HeroCarousel from "./components/HeroCarousel";
 import ServicesSection from "./components/ServicesSection";
 import { useActiveSection, getNavLinkClass } from "./hooks/useActiveSection";
+import { BRAND_META_DESCRIPTION, SITE_TITLE } from "./data/branding";
 import ServiceSection from "./components/services/ServiceSection";
 import { getThemeClasses } from "./components/services/theme";
 
@@ -685,6 +686,28 @@ function ContactSection() {
   );
 }
 
+function HomePageSEO() {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname !== "/") return;
+
+    document.title = SITE_TITLE;
+
+    let meta = document.querySelector('meta[name="description"]');
+    if (meta) {
+      meta.setAttribute("content", BRAND_META_DESCRIPTION);
+    } else {
+      meta = document.createElement("meta");
+      meta.name = "description";
+      meta.content = BRAND_META_DESCRIPTION;
+      document.head.appendChild(meta);
+    }
+  }, [location.pathname]);
+
+  return null;
+}
+
 function ScrollToTop() {
   const location = useLocation();
 
@@ -700,6 +723,7 @@ function App() {
     <div className="bg-slate-950 text-slate-100 antialiased">
       <Router>
         <ScrollToTop />
+        <HomePageSEO />
         <LeadCaptureModal />
         <header className="fixed top-0 z-40 w-full backdrop-blur-md bg-gradient-to-b from-slate-950/50 to-slate-950/20 border-b border-slate-700/20 transition-all duration-300 shadow-lg shadow-slate-950/50">
           <div className="relative mx-auto flex max-w-7xl items-center justify-between px-6 py-4">

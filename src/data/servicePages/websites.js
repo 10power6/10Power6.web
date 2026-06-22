@@ -7,7 +7,7 @@ import showcaseTwoImg from "../../assets/services/websites/showcase-two.webp";
 export default {
   slug: "websites",
   title: "Websites",
-  seoTitle: "Professional Website Design & Development | 10Power6 Agency",
+  seoTitle: "Professional Website Design & Development | 10Power6",
   seoDescription:
     "10Power6 designs and develops premium responsive websites optimized for speed, SEO, accessibility, and conversion. Modern web design for businesses that want to stand out online.",
   images: {

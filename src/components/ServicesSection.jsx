@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import ServiceSection, { ServiceSectionHeading } from "./services/ServiceSection";
 import { services } from "../serviceData";
+import { BRAND_DESCRIPTION, BRAND_TAGLINE } from "../data/branding";
 
 const container = {
   hidden: {},
@@ -67,9 +68,9 @@ export default function ServicesSection() {
     <ServiceSection theme="light" id="services" ariaLabelledBy="services-heading" className="relative overflow-hidden">
       <ServiceSectionHeading
         theme="light"
-        label="Selected Services"
-        title="Digital Solutions Built for Modern Growth"
-        description="We engineer scalable digital experiences, AI-powered systems, and growth-focused solutions designed to help ambitious businesses lead in the modern digital era."
+        label={BRAND_TAGLINE}
+        title="Intelligent solutions built to scale"
+        description={BRAND_DESCRIPTION}
         titleId="services-heading"
         className="mb-12 lg:mb-14"
       />
